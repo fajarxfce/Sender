@@ -22,7 +22,7 @@ public class Main extends JFrame{
     private JPanel sendPane;
     private JRadioButton HTMLRadioButton;
     private JRadioButton plaintTextRadioButton;
-    private JTextArea textArea1;
+    private JTextArea textAreaBody;
     private JButton importSmtp;
     private JButton editButton;
     private JTable smtpTable;
@@ -42,10 +42,22 @@ public class Main extends JFrame{
     private JLabel smtpCount;
     private JLabel txtListCount;
     private JButton stopButton;
+    private JTextArea textAreaSubject;
+    private JTextArea textAreaFromName;
+    private JTextArea textAreaFromMail;
     private ImportListController importListController;
+    private ButtonGroup letterMode;
 
     public Main() {
         add(root);
+
+        fromTab.addTab("Subject", subjectPane);
+        fromTab.addTab("From Name", fromNamePane);
+        fromTab.addTab("From Mail", fromMailPane);
+
+        letterMode = new ButtonGroup();
+        letterMode.add(HTMLRadioButton);
+        letterMode.add(plaintTextRadioButton);
 
         SMTPTableModel smtpTableModel = new SMTPTableModel();
         smtpTable.setModel(smtpTableModel);
@@ -61,8 +73,17 @@ public class Main extends JFrame{
         importListController = new ImportListController(emailListTable);
         addList.addActionListener(importListController);
 
+        SendEmailConfig sendEmailConfig = new SendEmailConfig.Builder()
+                .setEmailListTable(emailListTable)
+                .setSmtpTableModel(smtpTableModel)
+                .setImportListController(importListController)
+                .setConnectionCount((int) spConnection.getValue())
+                .setTextAreaSubject(textAreaSubject)
+                .setTextAreaFromName(textAreaFromName)
+                .setTextAreaBody(textAreaBody)
+                .build();
 
-        SendMainController sendMainController = new SendMainController(emailListTable, smtpTableModel, importListController, (int) spConnection.getValue());
+        SendMainController sendMainController = new SendMainController(emailListTable, smtpTableModel, importListController, (int) spConnection.getValue(), textAreaSubject, textAreaFromName, textAreaBody);
         startButton.addActionListener(sendMainController);
         stopButton.addActionListener(sendMainController);
 

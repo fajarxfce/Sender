@@ -1,5 +1,6 @@
 package com.anjay.mabar.worker;
 
+import com.anjay.mabar.models.EmailDetails;
 import com.anjay.mabar.models.SMTPServer;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.utils.EmailSender;
@@ -18,11 +19,12 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private List<SMTPServer> smtpServers;
     private volatile boolean isPaused = false;
     private volatile boolean isStopped = false;
-
-    public SendEmailWorker(List<String> emailList, List<SMTPServer> smtpServers, int connectionCount) {
+    private EmailDetails emailDetails;
+    public SendEmailWorker(List<String> emailList, List<SMTPServer> smtpServers, int connectionCount, EmailDetails emailDetails) {
         this.emailList = emailList;
         this.smtpServers = smtpServers;
         this.connectionCount = connectionCount;
+        this.emailDetails = emailDetails;
         this.observers = new ArrayList<>();
         this.executorService = Executors.newFixedThreadPool(10);
     }
@@ -70,8 +72,10 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                                 "Test Body",
                                 "test Message"
                         );
+                        notifySent(email);
 //                        System.out.println("Email sent to: " + email + " using " + smtpServer.getUsername());
                     } catch (Exception e) {
+                        notifyError(email);
 //                        System.out.println("Email failed to send to: " + email + " using " + smtpServer.getUsername());
                     }
                     try {
