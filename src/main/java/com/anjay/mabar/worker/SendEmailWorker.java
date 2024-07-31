@@ -7,6 +7,7 @@ import com.anjay.mabar.utils.EmailSender;
 
 import javax.swing.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -40,17 +41,28 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                 executorService.submit(() -> {
                     try {
 
+                        List<String> subjectList = emailDetails.getSubject();
+                        Collections.shuffle(subjectList);
+                        String subject = subjectList.get(0);
+
+                        List<String> fromNameList = emailDetails.getFromName();
+                        Collections.shuffle(fromNameList);
+                        String fromName = fromNameList.get(0);
+
+                        String body = emailDetails.getBody();
+                        String toAddress = emailDetails.getToAddress();
+
                         EmailSender.sendEmail(
                                 smtpServer.getUsername(),
                                 smtpServer.getPassword(),
-                                "fajargblk1@gmail.com",
+                                fromName,
+                                "support@mail.google.com",
                                 email,
-                                emailDetails.getFromName(),
-                                emailDetails.getSubject(),
-                                emailDetails.getBody()
+                                subject,
+                                body
                         );
                         notifySent(email);
-//                        System.out.println("Email sent to: " + email + " using " + smtpServer.getUsername());
+                        System.out.println(subject);
                     } catch (Exception e) {
                         notifyError(email);
 //                        System.out.println("Email failed to send to: " + email + " using " + smtpServer.getUsername());

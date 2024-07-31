@@ -38,13 +38,16 @@ public class Main extends JFrame{
     private JButton clearAllButton;
     private JButton clearSuccessButton;
     private JTable tableEmailList;
-    private JToolBar toolbar;
     private JLabel smtpCount;
     private JLabel txtListCount;
     private JButton stopButton;
     private JTextArea textAreaSubject;
     private JTextArea textAreaFromName;
     private JTextArea textAreaFromMail;
+    private JMenuBar menuBar1;
+    private JMenu fileMenu;
+    private JMenuItem header;
+    private JMenuItem exit;
     private ImportListController importListController;
     private ButtonGroup letterMode;
 
@@ -76,11 +79,11 @@ public class Main extends JFrame{
         SendEmailConfig sendEmailConfig = new SendEmailConfig.Builder()
                 .setEmailListTable(emailListTable)
                 .setSmtpTableModel(smtpTableModel)
-                .setImportListController(importListController)
-                .setConnectionCount((int) spConnection.getValue())
-                .setTextAreaSubject(textAreaSubject)
-                .setTextAreaFromName(textAreaFromName)
-                .setTextAreaBody(textAreaBody)
+                .setListController(importListController)
+                .setConnection((int) spConnection.getValue())
+                .setSubject(textAreaSubject)
+                .setFromName(textAreaFromName)
+                .setBody(textAreaBody)
                 .build();
 
         SendMainController sendMainController = new SendMainController(sendEmailConfig);
@@ -95,12 +98,20 @@ public class Main extends JFrame{
                 }
             }
         });
+
+        setupToolbar();
+    }
+
+    private void setupToolbar() {
+
+
+
     }
 
     public static void main(String[] args) {
         setupLookAndFeel();
         Main main = new Main();
-        main.setSize(800, 600);
+        main.setSize(1200, 800);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setLocationRelativeTo(null);
         main.setVisible(true);

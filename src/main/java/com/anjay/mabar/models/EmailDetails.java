@@ -1,27 +1,32 @@
 package com.anjay.mabar.models;
 
+import java.util.List;
+
 public class EmailDetails {
-    private String subject;
-    private String fromName;
+    private List<String> subject;
+    private List<String> fromName;
     private String body;
+    private String toAddress;
 
     private EmailDetails(Builder builder) {
         this.subject = builder.subject;
         this.fromName = builder.fromName;
+        this.toAddress = builder.toAddress;
         this.body = builder.body;
     }
 
     public static class Builder {
-        private String subject;
-        private String fromName;
+        private List<String> subject;
+        private List<String> fromName;
         private String body;
+        private String toAddress;
 
-        public Builder setSubject(String subject) {
+        public Builder setSubject(List<String> subject) {
             this.subject = subject;
             return this;
         }
 
-        public Builder setFromName(String fromName) {
+        public Builder setFromName(List<String> fromName) {
             this.fromName = fromName;
             return this;
         }
@@ -31,17 +36,25 @@ public class EmailDetails {
             return this;
         }
 
+        public Builder setToAddress(String toAddress) {
+            this.toAddress = toAddress;
+            return this;
+        }
         public EmailDetails build() {
             return new EmailDetails(this);
         }
     }
 
-    public String getSubject() {
+    public List<String> getSubject() {
         return subject;
     }
 
-    public String getFromName() {
+    public List<String> getFromName() {
         return fromName;
+    }
+
+    public String getToAddress() {
+        return toAddress;
     }
 
     public String getBody() {

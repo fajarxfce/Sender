@@ -1,5 +1,6 @@
 package com.anjay.mabar.controllers;
 
+import com.anjay.mabar.factory.SMTPServerFactory;
 import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.worker.SendEmailWorker;
@@ -7,8 +8,7 @@ import com.anjay.mabar.worker.SendEmailWorker;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class SendMainController implements ActionListener, SendMailObserver {
 
@@ -20,15 +20,19 @@ public class SendMainController implements ActionListener, SendMailObserver {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<SMTPServer> smtpServers = getSMTPServers(emailConfig.getSmtpTableModel());
-        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
-        String subject = emailConfig.getTextAreaSubject().getText();
-        String fromName = emailConfig.getTextAreaFromName().getText();
+        SMTPTableModel smtpTableModel = emailConfig.getSmtpTableModel();
+        String subjectText = emailConfig.getTextAreaSubject().getText();
+        String fromNameText = emailConfig.getTextAreaFromName().getText();
+        List<String> subjectList = Arrays.asList(subjectText.split("\\r?\\n"));
+        List<String> fromNameList = Arrays.asList(fromNameText.split("\\r?\\n"));
         String body = emailConfig.getTextAreaBody().getText();
+
+        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
+        List<SMTPServer> smtpServers = SMTPServerFactory.createSMTPServers(smtpTableModel);
         EmailDetails emailDetails = new EmailDetails.Builder()
-                .setSubject(subject)
-                .setFromName(fromName)
+                .setSubject(subjectList)
+                .setFromName(fromNameList)
                 .setBody(body)
                 .build();
         SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, connectionCount, emailDetails);
@@ -41,7 +45,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
         int rowCount = emailConfig.getEmailListTable().getRowCount();
         for (int i = 0; i < rowCount; i++) {
             if (emailConfig.getEmailListTable().getValueAt(i, 1).equals(email)) {
-                System.out.println("Updating email status: " + email + " to " + status);
+//                System.out.println("Updating email status: " + email + " to " + status);
                 emailConfig.getEmailListTable().setValueAt(status, i, 2); // Assuming the status column is at index 1
                 break;
             }
@@ -50,13 +54,13 @@ public class SendMainController implements ActionListener, SendMailObserver {
 
     @Override
     public void onSendMailSuccess(String email) {
-        System.out.println("Email sent to: " + email);
+//        System.out.println("Email sent to: " + email);
         updateEmailStatus(email, "Failed");
     }
 
     @Override
     public void onSendMailFailed(String message) {
-        System.out.println("Failed to send email: " + message);
+//        System.out.println("Failed to send email: " + message);
         updateEmailStatus(message, "Failed");
     }
 

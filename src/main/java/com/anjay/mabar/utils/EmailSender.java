@@ -28,7 +28,7 @@ public class EmailSender {
         try {
             // Create a new email message
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(username, fromName));
+            msg.setFrom(new InternetAddress(username));
 
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
             if (bccAddress != null && !bccAddress.isEmpty()) {
@@ -39,7 +39,7 @@ public class EmailSender {
 
             // Send the email
             Transport.send(msg);
-        } catch (MessagingException | UnsupportedEncodingException e) {
+        } catch (MessagingException e) {
             System.out.println("Failed to send email "+bccAddress+" with smtp"+ username);
             System.out.println("Subject: "+subject);
             System.out.println("Subject: "+message);

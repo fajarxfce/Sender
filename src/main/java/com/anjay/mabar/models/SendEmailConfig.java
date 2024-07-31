@@ -42,27 +42,27 @@ public class SendEmailConfig {
             return this;
         }
 
-        public Builder setImportListController(ImportListController importListController) {
+        public Builder setListController(ImportListController importListController) {
             this.importListController = importListController;
             return this;
         }
 
-        public Builder setConnectionCount(int connectionCount) {
+        public Builder setConnection(int connectionCount) {
             this.connectionCount = connectionCount;
             return this;
         }
 
-        public Builder setTextAreaSubject(JTextArea textAreaSubject) {
+        public Builder setSubject(JTextArea textAreaSubject) {
             this.textAreaSubject = textAreaSubject;
             return this;
         }
 
-        public Builder setTextAreaFromName(JTextArea textAreaFromName) {
+        public Builder setFromName(JTextArea textAreaFromName) {
             this.textAreaFromName = textAreaFromName;
             return this;
         }
 
-        public Builder setTextAreaBody(JTextArea textAreaBody) {
+        public Builder setBody(JTextArea textAreaBody) {
             this.textAreaBody = textAreaBody;
             return this;
         }
