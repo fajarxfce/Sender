@@ -1,6 +1,7 @@
 package com.anjay.mabar.controllers;
 
 import com.anjay.mabar.models.SMTPPath;
+import com.anjay.mabar.models.SMTPServer;
 import com.anjay.mabar.models.SMTPTableModel;
 import com.anjay.mabar.models.Smtp;
 import com.anjay.mabar.utils.CsvReader;
@@ -31,8 +32,8 @@ public class SelectSMTPController implements ActionListener {
 ////            fetchSmtp(selectedFile.getAbsolutePath());
 //            fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
 //        }
-        fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
 
+        fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
     }
 
     private void fetchSmtp(String path) {

@@ -1,6 +1,7 @@
 package com.anjay.mabar.models;
 
 import javax.swing.*;
+import java.util.List;
 
 public class SMTPPath {
     private JLabel smtpCount;

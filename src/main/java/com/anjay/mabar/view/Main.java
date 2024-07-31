@@ -4,12 +4,12 @@ import com.anjay.mabar.controllers.ImportListController;
 import com.anjay.mabar.controllers.SelectSMTPController;
 import com.anjay.mabar.controllers.SendMainController;
 import com.anjay.mabar.models.*;
-import com.anjay.mabar.utils.EmailSender;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main extends JFrame{
@@ -31,7 +31,7 @@ public class Main extends JFrame{
     private JSpinner spConnection;
     private JSpinner spPause;
     private JSpinner spSleep;
-    private JButton STOPButton;
+    private JButton stopButton;
     private JButton startButton;
     private JTabbedPane fromTab;
     private JPanel subjectPane;
@@ -63,27 +63,14 @@ public class Main extends JFrame{
         importListController = new ImportListController(emailListTable);
         addList.addActionListener(importListController);
 
-        SendMainController sendMainController = new SendMainController();
+
+        SendMainController sendMainController = new SendMainController(emailListTable, smtpTableModel, importListController, (int) spConnection.getValue());
         startButton.addActionListener(sendMainController);
-    }
-    private void sendEmails() {
-        SMTPTableModel smtpTableModel = (SMTPTableModel) smtpTable.getModel();
-        int rowCount = smtpTableModel.getRowCount();
-        List<String> bccAddresses = importListController.getEmailAddresses();
-
-        for (int i = 0; i < rowCount; i++) {
-            String host = "smtp.gmail.com";
-            String port = "587";
-            String username = (String) smtpTableModel.getValueAt(i, 2);
-            String password = (String) smtpTableModel.getValueAt(i, 3);
-            String toAddress = "recipient-email@gmail.com";
-            String subject = "Test Email";
-            String message = "This is a test email sent from Java.";
-
-            for (String bccAddress : bccAddresses) {
-                EmailSender.sendEmail(host, port, username, password, toAddress, bccAddress, subject, message);
+        stopButton.addActionListener(e -> {
+            for (int i = 0; i <= 100; i++) {
+                System.out.println("emailist"+ i + "@domain.com");
             }
-        }
+        });
     }
 
     public static void main(String[] args) {
