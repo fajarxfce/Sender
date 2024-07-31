@@ -15,6 +15,7 @@ public class SelectSMTPController implements ActionListener {
 
     private SMTPPath smtpPath;
     private SMTPTableModel model;
+
     public SelectSMTPController(SMTPPath smtpPath, SMTPTableModel model) {
         this.smtpPath = smtpPath;
         this.model = model;
@@ -26,20 +27,17 @@ public class SelectSMTPController implements ActionListener {
         int result = fileChooser.showOpenDialog(null);
         if (result == JFileChooser.APPROVE_OPTION) {
             File selectedFile = fileChooser.getSelectedFile();
-//            smtpPath.setPath(selectedFile.getAbsolutePath());
             System.out.println(selectedFile.getAbsolutePath());
             fetchSmtp(selectedFile.getAbsolutePath());
         }
-
     }
 
     private void fetchSmtp(String path) {
-        // Fetch SMTP from path
         List<Smtp> smtps = CsvReader.readCsv(path);
 
         int count = model.getRowCount();
         for (Smtp smtp : smtps) {
-            model.addRow(new Object[]{count++, smtp.getEmailAddress()});
+            model.addRow(new Object[]{count++ + 1, smtp.getEmailAddress(), smtp.getUsername(), smtp.getPassword()});
         }
         smtpPath.setCount(smtps.size());
     }

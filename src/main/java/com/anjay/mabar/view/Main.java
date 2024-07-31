@@ -3,11 +3,12 @@ package com.anjay.mabar.view;
 import com.anjay.mabar.controllers.ImportListController;
 import com.anjay.mabar.controllers.SelectSMTPController;
 import com.anjay.mabar.models.*;
-import com.anjay.mabar.utils.CsvReader;
-import com.anjay.mabar.utils.TxtReader;
+import com.anjay.mabar.utils.EmailSender;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 public class Main extends JFrame{
@@ -30,7 +31,7 @@ public class Main extends JFrame{
     private JSpinner spinner2;
     private JSpinner spinner3;
     private JButton STOPButton;
-    private JButton STARTButton;
+    private JButton startButton;
     private JTabbedPane fromTab;
     private JPanel subjectPane;
     private JPanel fromNamePane;
@@ -42,6 +43,7 @@ public class Main extends JFrame{
     private JToolBar toolbar;
     private JLabel smtpCount;
     private JLabel txtListCount;
+    private ImportListController importListController;
 
     public Main() {
         add(root);
@@ -55,26 +57,32 @@ public class Main extends JFrame{
         EmailListPath emailListPath = new EmailListPath(txtListCount);
         EmailListTable emailListTable = new EmailListTable();
         tableEmailList.setModel(emailListTable);
-        ImportListController importListController = new ImportListController(emailListTable, emailListPath);
+        importListController = new ImportListController(emailListTable);
         addList.addActionListener(importListController);
+        startButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sendEmails();
+            }
+        });
     }
+    private void sendEmails() {
+        SMTPTableModel smtpTableModel = (SMTPTableModel) smtpTable.getModel();
+        int rowCount = smtpTableModel.getRowCount();
+        List<String> bccAddresses = importListController.getEmailAddresses();
 
-    private void loadSmtp(){
-        String filePath = "C:\\Users\\Fajar\\Downloads\\smtp.csv";
-        List<Smtp> smtps = CsvReader.readCsv(filePath);
+        for (int i = 0; i < rowCount; i++) {
+            String host = "smtp.gmail.com";
+            String port = "587";
+            String username = (String) smtpTableModel.getValueAt(i, 2);
+            String password = (String) smtpTableModel.getValueAt(i, 3);
+            String toAddress = "recipient-email@gmail.com";
+            String subject = "Test Email";
+            String message = "This is a test email sent from Java.";
 
-        for (Smtp smtp : smtps) {
-            System.out.println("First Name: " + smtp.getFirstName());
-            System.out.println("Last Name: " + smtp.getLastName());
-            System.out.println("Email Address: " + smtp.getEmailAddress());
-            System.out.println("Password: " + smtp.getPassword());
-        }
-
-        String emailListPath = "D:\\to linux\\list\\webde.txt";
-        List<EmailList> emailLists = TxtReader.readTxt(emailListPath);
-
-        for (EmailList emailList : emailLists) {
-            System.out.println("Email Address: " + emailList.getEmailAddress());
+            for (String bccAddress : bccAddresses) {
+                EmailSender.sendEmail(host, port, username, password, toAddress, bccAddress, subject, message);
+            }
         }
     }
 
