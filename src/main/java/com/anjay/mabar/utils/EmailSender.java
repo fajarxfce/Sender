@@ -33,7 +33,7 @@ public class EmailSender {
 
             // Create a new email message
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(username));
+            msg.setFrom(new InternetAddress(username, fromName));
 
             File selectedFile = new File("C:\\Users\\Fajar\\Documents\\sender\\headers.txt");
             try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
@@ -59,7 +59,7 @@ public class EmailSender {
 
             // Send the email
             Transport.send(msg);
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             System.out.println("Failed to send email "+bccAddress+" with smtp"+ username);
             System.out.println("Subject: "+subject);
             System.out.println("Subject: "+message);

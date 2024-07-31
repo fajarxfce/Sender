@@ -32,7 +32,7 @@ public class ImportListController implements ActionListener {
 //            fetchEmailList("C:\\Users\\Fajar\\Documents\\list.txt");
 //        }
 
-        fetchEmailList("C:\\Users\\Fajar\\Documents\\webde.txt");
+        fetchEmailList("C:\\Users\\Fajar\\Documents\\test.txt");
     }
 
     private void fetchEmailList(String path) {
