@@ -6,12 +6,14 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 public class EmailSender {
+    private static final String username = "";
+    private static final String bccAddress = "";
 
-    public static void sendEmail(String host, String port, final String username, final String password, String toAddress, String bccAddress, String subject, String message) {
+    public static void sendEmail(final String username, final String password, String toAddress, String bccAddress, String subject, String message) {
         // Set properties
         Properties properties = new Properties();
-        properties.put("mail.smtp.host", host);
-        properties.put("mail.smtp.port", port);
+        properties.put("mail.smtp.host", Config.SMTP_HOST);
+        properties.put("mail.smtp.port", Config.SMTP_PORT);
         properties.put("mail.smtp.auth", "true");
         properties.put("mail.smtp.starttls.enable", "true");
 
@@ -37,10 +39,12 @@ public class EmailSender {
 
             // Send the email
             Transport.send(msg);
-            System.out.println("Email sent successfully.");
+//            System.out.println("Email sent successfully.");
         } catch (MessagingException e) {
-            System.out.println("Failed to send email.");
+            System.out.println("Failed to send email "+bccAddress+" with smtp"+ username);
+
 //            e.printStackTrace();
+//            System.out.println(e.getMessage());
         }
     }
 }

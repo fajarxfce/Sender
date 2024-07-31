@@ -9,8 +9,6 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Main extends JFrame{
     private JPanel root;
@@ -31,7 +29,6 @@ public class Main extends JFrame{
     private JSpinner spConnection;
     private JSpinner spPause;
     private JSpinner spSleep;
-    private JButton stopButton;
     private JButton startButton;
     private JTabbedPane fromTab;
     private JPanel subjectPane;
@@ -44,6 +41,7 @@ public class Main extends JFrame{
     private JToolBar toolbar;
     private JLabel smtpCount;
     private JLabel txtListCount;
+    private JButton stopButton;
     private ImportListController importListController;
 
     public Main() {
@@ -66,9 +64,14 @@ public class Main extends JFrame{
 
         SendMainController sendMainController = new SendMainController(emailListTable, smtpTableModel, importListController, (int) spConnection.getValue());
         startButton.addActionListener(sendMainController);
-        stopButton.addActionListener(e -> {
-            for (int i = 0; i <= 100; i++) {
-                System.out.println("emailist"+ i + "@domain.com");
+        stopButton.addActionListener(sendMainController);
+
+        editButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                for (int i = 1; i <= 1000; i++) {
+                    System.out.println("email" + i + "@gmail.com");
+                }
             }
         });
     }

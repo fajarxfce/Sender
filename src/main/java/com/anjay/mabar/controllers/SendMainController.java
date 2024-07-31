@@ -26,13 +26,19 @@ public class SendMainController implements ActionListener, SendMailObserver {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-
         List<SMTPServer> smtpServers = getSMTPServers(smtpTableModel);
-
         List<String> emailList = importListController.getEmailAddresses();
         SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, connectionCount);
         worker.addObserver(this);
-        worker.execute();
+        String command = e.getActionCommand();
+        if ("START".equals(command)) {
+            System.out.println("Start sending email");
+            worker.execute();
+        } else if ("STOP".equals(command)) {
+            System.out.println("Stop sending email");
+            worker.pause();
+        }
+
     }
 
     @Override

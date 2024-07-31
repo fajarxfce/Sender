@@ -1,8 +1,8 @@
 package com.anjay.mabar.worker;
 
 import com.anjay.mabar.models.SMTPServer;
-import com.anjay.mabar.models.Smtp;
 import com.anjay.mabar.observers.SendMailObserver;
+import com.anjay.mabar.utils.EmailSender;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -16,37 +16,66 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private List<SendMailObserver> observers;
     private int connectionCount;
     private List<SMTPServer> smtpServers;
+    private volatile boolean isPaused = false;
+    private volatile boolean isStopped = false;
 
     public SendEmailWorker(List<String> emailList, List<SMTPServer> smtpServers, int connectionCount) {
         this.emailList = emailList;
         this.smtpServers = smtpServers;
         this.connectionCount = connectionCount;
         this.observers = new ArrayList<>();
-        this.executorService = Executors.newFixedThreadPool(3);
+        this.executorService = Executors.newFixedThreadPool(10);
+    }
+
+    public synchronized void pause() {
+        isPaused = true;
+    }
+
+    public synchronized void resume() {
+        isPaused = false;
+        notifyAll();
+    }
+
+    public synchronized void stop() {
+        isStopped = true;
+        isPaused = false;
+        notifyAll();
+    }
+
+    private synchronized void checkPaused() throws InterruptedException {
+        while (isPaused) {
+            wait();
+        }
     }
 
     @Override
     protected Void doInBackground() throws Exception {
-
         System.out.println("Email list size: " + emailList.size());
         System.out.println("SMTP Server size: " + smtpServers.size());
 
         int smtpIndex = 0;
-        for (int i = 0; i < emailList.size(); i += 3) {
+        for (int i = 0; i < emailList.size(); i += 1) {
             SMTPServer smtpServer = smtpServers.get(smtpIndex);
-            for (int j = 0; j < 3 && (i + j) < emailList.size(); j++) {
+            for (int j = 0; j < 1 && (i + j) < emailList.size(); j++) {
                 String email = emailList.get(i + j);
                 executorService.submit(() -> {
                     try {
-                        // Send email using smtpServer
-                        System.out.println("Email sent to: " + email + " using " + smtpServer.getUsername());
-//                        notifySent(email);
+                        checkPaused();
+
+                        EmailSender.sendEmail(
+                                smtpServer.getUsername(),
+                                smtpServer.getPassword(),
+                                "fajargblk1@gmail.com",
+                                email,
+                                "Test Body",
+                                "test Message"
+                        );
+//                        System.out.println("Email sent to: " + email + " using " + smtpServer.getUsername());
                     } catch (Exception e) {
-                        System.out.println("Email failed to send to: " + email + " using " + smtpServer.getUsername());
-//                        notifyError(email);
+//                        System.out.println("Email failed to send to: " + email + " using " + smtpServer.getUsername());
                     }
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(0);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }
@@ -71,6 +100,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
             observer.onSendMailSuccess(email);
         }
     }
+
     public void notifyError(String email) {
         for (SendMailObserver observer : observers) {
             observer.onSendMailFailed(email);
