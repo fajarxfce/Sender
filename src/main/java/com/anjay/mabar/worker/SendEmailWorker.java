@@ -51,6 +51,8 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
 
                         String body = emailDetails.getBody();
                         String toAddress = emailDetails.getToAddress();
+                        String contentType = emailDetails.getContentType();
+
 
                         System.out.println(body);
 
@@ -61,7 +63,8 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                                 "support@mail.google.com",
                                 email,
                                 subject,
-                                body
+                                body,
+                                contentType
                         );
                         notifySent(email);
                         System.out.println(subject);

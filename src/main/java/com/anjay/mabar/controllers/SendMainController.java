@@ -26,6 +26,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
         List<String> subjectList = Arrays.asList(subjectText.split("\\r?\\n"));
         List<String> fromNameList = Arrays.asList(fromNameText.split("\\r?\\n"));
         String body = emailConfig.getTextAreaBody().getText();
+        String contentType = emailConfig.getContentType();
 
         System.out.println(body);
         List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
@@ -35,6 +36,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
                 .setSubject(subjectList)
                 .setFromName(fromNameList)
                 .setBody(body)
+                .setContentType(contentType)
                 .build();
         SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, connectionCount, emailDetails);
         worker.addObserver(this);

@@ -9,6 +9,7 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Enumeration;
 
 public class Main extends JFrame{
     private JPanel root;
@@ -76,6 +77,8 @@ public class Main extends JFrame{
         importListController = new ImportListController(emailListTable);
         addList.addActionListener(importListController);
 
+        String contentType = HTMLRadioButton.isSelected() ? "html" : "text";
+
         SendEmailConfig sendEmailConfig = new SendEmailConfig.Builder()
                 .setEmailListTable(emailListTable)
                 .setSmtpTableModel(smtpTableModel)
@@ -83,21 +86,13 @@ public class Main extends JFrame{
                 .setConnection((int) spConnection.getValue())
                 .setSubject(textAreaSubject)
                 .setFromName(textAreaFromName)
+                .setContentType(contentType)
                 .setBody(textAreaBody)
                 .build();
 
         SendMainController sendMainController = new SendMainController(sendEmailConfig);
         startButton.addActionListener(sendMainController);
         stopButton.addActionListener(sendMainController);
-
-        editButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                for (int i = 1; i <= 1000; i++) {
-                    System.out.println("email" + i + "@gmail.com");
-                }
-            }
-        });
 
         setupToolbar();
     }

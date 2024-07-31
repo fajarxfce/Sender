@@ -7,11 +7,13 @@ public class EmailDetails {
     private List<String> fromName;
     private String body;
     private String toAddress;
+    private String contentType;
 
     private EmailDetails(Builder builder) {
         this.subject = builder.subject;
         this.fromName = builder.fromName;
         this.toAddress = builder.toAddress;
+        this.contentType = builder.contentType;
         this.body = builder.body;
     }
 
@@ -20,6 +22,7 @@ public class EmailDetails {
         private List<String> fromName;
         private String body;
         private String toAddress;
+        private String contentType;
 
         public Builder setSubject(List<String> subject) {
             this.subject = subject;
@@ -40,6 +43,12 @@ public class EmailDetails {
             this.toAddress = toAddress;
             return this;
         }
+
+        public Builder setContentType(String contentType) {
+            this.contentType = contentType;
+            return this;
+        }
+
         public EmailDetails build() {
             return new EmailDetails(this);
         }
@@ -55,6 +64,10 @@ public class EmailDetails {
 
     public String getToAddress() {
         return toAddress;
+    }
+
+    public String getContentType() {
+        return contentType;
     }
 
     public String getBody() {
