@@ -1,10 +1,8 @@
 package com.anjay.mabar.view;
 
+import com.anjay.mabar.controllers.ImportListController;
 import com.anjay.mabar.controllers.SelectSMTPController;
-import com.anjay.mabar.models.EmailList;
-import com.anjay.mabar.models.SMTPPath;
-import com.anjay.mabar.models.SMTPTableModel;
-import com.anjay.mabar.models.Smtp;
+import com.anjay.mabar.models.*;
 import com.anjay.mabar.utils.CsvReader;
 import com.anjay.mabar.utils.TxtReader;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -37,12 +35,13 @@ public class Main extends JFrame{
     private JPanel subjectPane;
     private JPanel fromNamePane;
     private JPanel fromMailPane;
-    private JButton addButton;
+    private JButton addList;
     private JButton clearAllButton;
     private JButton clearSuccessButton;
-    private JTable table1;
+    private JTable tableEmailList;
     private JToolBar toolbar;
     private JLabel smtpCount;
+    private JLabel txtListCount;
 
     public Main() {
         add(root);
@@ -53,6 +52,11 @@ public class Main extends JFrame{
         SelectSMTPController selectSMTPController = new SelectSMTPController(smtpPath, smtpTableModel);
         importSmtp.addActionListener(selectSMTPController);
 
+        EmailListPath emailListPath = new EmailListPath(txtListCount);
+        EmailListTable emailListTable = new EmailListTable();
+        tableEmailList.setModel(emailListTable);
+        ImportListController importListController = new ImportListController(emailListTable, emailListPath);
+        addList.addActionListener(importListController);
     }
 
     private void loadSmtp(){
