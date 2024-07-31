@@ -1,9 +1,11 @@
 package com.anjay.mabar.utils;
 
+import com.anjay.mabar.models.EmailHeaderTable;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.util.Properties;
 
 public class EmailSender {
@@ -26,9 +28,27 @@ public class EmailSender {
         Session session = Session.getInstance(properties, auth);
 
         try {
+
+
+
             // Create a new email message
             Message msg = new MimeMessage(session);
             msg.setFrom(new InternetAddress(username));
+
+            File selectedFile = new File("C:\\Users\\Fajar\\Documents\\sender\\headers.txt");
+            try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split("\\|");
+                    if (parts.length == 2) {
+                        msg.addHeader(parts[0], parts[1]);
+                    }
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+
+            System.out.println(msg.getAllHeaders());;
 
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
             if (bccAddress != null && !bccAddress.isEmpty()) {

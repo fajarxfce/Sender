@@ -2,10 +2,10 @@ package com.anjay.mabar.models;
 
 import javax.swing.table.DefaultTableModel;
 
-public class SMTPTableModel extends DefaultTableModel {
+public class EmailHeaderTable extends DefaultTableModel {
 
-    public SMTPTableModel() {
-        super(new Object[]{"No", "Email Address", "Username", "Password"}, 0);
+    public EmailHeaderTable() {
+        super(new Object[]{"No", "X-header", "Data"}, 0);
     }
 
     @Override
@@ -17,8 +17,6 @@ public class SMTPTableModel extends DefaultTableModel {
                 return String.class;
             case 2:
                 return String.class;
-            case 3:
-                return String.class;
             default:
                 return Object.class;
         }
@@ -26,6 +24,6 @@ public class SMTPTableModel extends DefaultTableModel {
 
     @Override
     public boolean isCellEditable(int row, int column) {
-        return false; // Make cells non-editable
+        return true; // Make cells non-editable
     }
 }
