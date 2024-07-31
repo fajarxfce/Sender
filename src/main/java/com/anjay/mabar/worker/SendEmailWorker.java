@@ -52,6 +52,8 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String body = emailDetails.getBody();
                         String toAddress = emailDetails.getToAddress();
 
+                        System.out.println(body);
+
                         EmailSender.sendEmail(
                                 smtpServer.getUsername(),
                                 smtpServer.getPassword(),

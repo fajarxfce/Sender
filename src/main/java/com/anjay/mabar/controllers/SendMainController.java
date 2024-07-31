@@ -27,6 +27,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
         List<String> fromNameList = Arrays.asList(fromNameText.split("\\r?\\n"));
         String body = emailConfig.getTextAreaBody().getText();
 
+        System.out.println(body);
         List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
         List<SMTPServer> smtpServers = SMTPServerFactory.createSMTPServers(smtpTableModel);

@@ -41,7 +41,7 @@ public class EmailSender {
                 while ((line = reader.readLine()) != null) {
                     String[] parts = line.split("\\|");
                     if (parts.length == 2) {
-                        msg.addHeader(parts[0], parts[1]);
+                        msg.addHeader(StringUtil.replacePlaceholders(parts[0]), StringUtil.replacePlaceholders(parts[1]));
                     }
                 }
             } catch (IOException ex) {
@@ -54,15 +54,15 @@ public class EmailSender {
             if (bccAddress != null && !bccAddress.isEmpty()) {
                 msg.setRecipient(Message.RecipientType.BCC, new InternetAddress(bccAddress));
             }
-            msg.setSubject(subject);
-            msg.setText(message);
+            msg.setSubject(StringUtil.replacePlaceholders(subject));
+            msg.setText(StringUtil.replacePlaceholders(message));
 
             // Send the email
             Transport.send(msg);
         } catch (MessagingException | UnsupportedEncodingException e) {
-            System.out.println("Failed to send email "+bccAddress+" with smtp"+ username);
-            System.out.println("Subject: "+subject);
-            System.out.println("Subject: "+message);
+//            System.out.println("Failed to send email "+bccAddress+" with smtp"+ username);
+//            System.out.println("Subject: "+subject);
+//            System.out.println("Subject: "+message);
         }
     }
 }

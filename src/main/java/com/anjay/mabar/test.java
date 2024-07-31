@@ -9,6 +9,9 @@ import java.util.regex.Pattern;
 public class test {
 
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    private static final String LOWERCASE = "abcdefghijklmnopqrstuvwxyz";
+    private static final String UPPERCASE = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    private static final String NUMBERS = "0123456789";
 
     public static String replacePlaceholders(String input) {
         Pattern pattern = Pattern.compile("##rand(\\w+?)(\\d*)##");
@@ -18,7 +21,7 @@ public class test {
         while (matcher.find()) {
             String type = matcher.group(1);
             String lengthStr = matcher.group(2);
-            int length = lengthStr.isEmpty() ? 10 : Integer.parseInt(lengthStr); // Default length is 10 if not specified
+            int length = lengthStr.isEmpty() ? 10 : Integer.parseInt(lengthStr);
             String replacement = generateRandomValue(type, length);
             matcher.appendReplacement(result, replacement);
         }
@@ -47,6 +50,21 @@ public class test {
                 String plaintText = generateRandomNumber(100);
                 String enc = AESUtil.encrypt(plaintText);
                 sb.append(enc);
+                break;
+            case "lower":
+                for (int i = 0; i < length; i++) {
+                    sb.append(LOWERCASE.charAt(random.nextInt(LOWERCASE.length())));
+                }
+                break;
+            case "upper":
+                for (int i = 0; i < length; i++) {
+                    sb.append(UPPERCASE.charAt(random.nextInt(UPPERCASE.length())));
+                }
+                break;
+            case "num":
+                for (int i = 0; i < length; i++) {
+                    sb.append(NUMBERS.charAt(random.nextInt(NUMBERS.length())));
+                }
                 break;
             default:
                 throw new IllegalArgumentException("Unknown random type: " + type);
