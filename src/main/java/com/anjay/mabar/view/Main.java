@@ -83,7 +83,7 @@ public class Main extends JFrame{
                 .setTextAreaBody(textAreaBody)
                 .build();
 
-        SendMainController sendMainController = new SendMainController(emailListTable, smtpTableModel, importListController, (int) spConnection.getValue(), textAreaSubject, textAreaFromName, textAreaBody);
+        SendMainController sendMainController = new SendMainController(sendEmailConfig);
         startButton.addActionListener(sendMainController);
         stopButton.addActionListener(sendMainController);
 

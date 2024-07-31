@@ -1,9 +1,6 @@
 package com.anjay.mabar.controllers;
 
-import com.anjay.mabar.models.EmailDetails;
-import com.anjay.mabar.models.EmailListTable;
-import com.anjay.mabar.models.SMTPServer;
-import com.anjay.mabar.models.SMTPTableModel;
+import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.worker.SendEmailWorker;
 
@@ -14,30 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendMainController implements ActionListener, SendMailObserver {
-    private EmailListTable model;
-    private SMTPTableModel smtpTableModel;
-    private ImportListController importListController;
-    private int connectionCount;
-    private JTextArea textAreaSubject;
-    private JTextArea textAreaFromName;
-    private JTextArea textAreaBody;
+//    private EmailListTable model;
+//    private SMTPTableModel smtpTableModel;
+//    private ImportListController importListController;
+//    private int connectionCount;
+//    private JTextArea textAreaSubject;
+//    private JTextArea textAreaFromName;
+//    private JTextArea textAreaBody;
+    private SendEmailConfig emailConfig;
 
-    public SendMainController(EmailListTable model, SMTPTableModel smtpTableModel, ImportListController importListController, int connectionCount, JTextArea textAreaSubject, JTextArea textAreaFromName, JTextArea textAreaBody) {
-        this.model = model;
-        this.smtpTableModel = smtpTableModel;
-        this.importListController = importListController;
-        this.connectionCount = connectionCount;
-        this.textAreaSubject = textAreaSubject;
-        this.textAreaFromName = textAreaFromName;
-        this.textAreaBody = textAreaBody;
+    public SendMainController(SendEmailConfig emailConfig){
+        this.emailConfig = emailConfig;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        List<SMTPServer> smtpServers = getSMTPServers(smtpTableModel);
-        List<String> emailList = importListController.getEmailAddresses();
-        EmailDetails emailDetails = new EmailDetails(textAreaSubject.getText(), textAreaFromName.getText(), textAreaBody.getText());
-        SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, connectionCount, emailDetails);
+        List<SMTPServer> smtpServers = getSMTPServers(emailConfig.getSmtpTableModel());
+        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
+        EmailDetails emailDetails = new EmailDetails(emailConfig.getTextAreaSubject().getText(), emailConfig.getTextAreaFromName().getText(), emailConfig.getTextAreaBody().getText());
+        SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, emailConfig.getConnectionCount(), emailDetails);
         worker.addObserver(this);
         String command = e.getActionCommand();
         if ("START".equals(command)) {
@@ -51,11 +43,11 @@ public class SendMainController implements ActionListener, SendMailObserver {
     }
 
     private void updateEmailStatus(String email, String status) {
-        int rowCount = model.getRowCount();
+        int rowCount = emailConfig.getEmailListTable().getRowCount();
         for (int i = 0; i < rowCount; i++) {
-            if (model.getValueAt(i, 1).equals(email)) {
+            if (emailConfig.getEmailListTable().getValueAt(i, 1).equals(email)) {
                 System.out.println("Updating email status: " + email + " to " + status);
-                model.setValueAt(status, i, 2); // Assuming the status column is at index 1
+                emailConfig.getEmailListTable().setValueAt(status, i, 2); // Assuming the status column is at index 1
                 break;
             }
         }
