@@ -17,8 +17,6 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private List<SendMailObserver> observers;
     private int connectionCount;
     private List<SMTPServer> smtpServers;
-    private volatile boolean isPaused = false;
-    private volatile boolean isStopped = false;
     private EmailDetails emailDetails;
     public SendEmailWorker(List<String> emailList, List<SMTPServer> smtpServers, int connectionCount, EmailDetails emailDetails) {
         this.emailList = emailList;
@@ -27,27 +25,6 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         this.emailDetails = emailDetails;
         this.observers = new ArrayList<>();
         this.executorService = Executors.newFixedThreadPool(10);
-    }
-
-    public synchronized void pause() {
-        isPaused = true;
-    }
-
-    public synchronized void resume() {
-        isPaused = false;
-        notifyAll();
-    }
-
-    public synchronized void stop() {
-        isStopped = true;
-        isPaused = false;
-        notifyAll();
-    }
-
-    private synchronized void checkPaused() throws InterruptedException {
-        while (isPaused) {
-            wait();
-        }
     }
 
     @Override
@@ -62,15 +39,15 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                 String email = emailList.get(i + j);
                 executorService.submit(() -> {
                     try {
-                        checkPaused();
 
                         EmailSender.sendEmail(
                                 smtpServer.getUsername(),
                                 smtpServer.getPassword(),
                                 "fajargblk1@gmail.com",
                                 email,
-                                "Test Body",
-                                "test Message"
+                                emailDetails.getFromName(),
+                                emailDetails.getSubject(),
+                                emailDetails.getBody()
                         );
                         notifySent(email);
 //                        System.out.println("Email sent to: " + email + " using " + smtpServer.getUsername());

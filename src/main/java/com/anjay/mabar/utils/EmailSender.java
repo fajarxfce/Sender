@@ -3,13 +3,12 @@ package com.anjay.mabar.utils;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 public class EmailSender {
-    private static final String username = "";
-    private static final String bccAddress = "";
 
-    public static void sendEmail(final String username, final String password, String toAddress, String bccAddress, String subject, String message) {
+    public static void sendEmail(final String username, final String password, String fromName, String toAddress, String bccAddress, String subject, String message) {
         // Set properties
         Properties properties = new Properties();
         properties.put("mail.smtp.host", Config.SMTP_HOST);
@@ -29,7 +28,8 @@ public class EmailSender {
         try {
             // Create a new email message
             Message msg = new MimeMessage(session);
-            msg.setFrom(new InternetAddress(username));
+            msg.setFrom(new InternetAddress(username, fromName));
+
             msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
             if (bccAddress != null && !bccAddress.isEmpty()) {
                 msg.setRecipient(Message.RecipientType.BCC, new InternetAddress(bccAddress));
@@ -39,12 +39,10 @@ public class EmailSender {
 
             // Send the email
             Transport.send(msg);
-//            System.out.println("Email sent successfully.");
-        } catch (MessagingException e) {
+        } catch (MessagingException | UnsupportedEncodingException e) {
             System.out.println("Failed to send email "+bccAddress+" with smtp"+ username);
-
-//            e.printStackTrace();
-//            System.out.println(e.getMessage());
+            System.out.println("Subject: "+subject);
+            System.out.println("Subject: "+message);
         }
     }
 }

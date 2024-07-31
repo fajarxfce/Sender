@@ -5,33 +5,46 @@ public class EmailDetails {
     private String fromName;
     private String body;
 
-    public EmailDetails(String subject, String fromName, String body) {
-        this.subject = subject;
-        this.fromName = fromName;
-        this.body = body;
+    private EmailDetails(Builder builder) {
+        this.subject = builder.subject;
+        this.fromName = builder.fromName;
+        this.body = builder.body;
+    }
+
+    public static class Builder {
+        private String subject;
+        private String fromName;
+        private String body;
+
+        public Builder setSubject(String subject) {
+            this.subject = subject;
+            return this;
+        }
+
+        public Builder setFromName(String fromName) {
+            this.fromName = fromName;
+            return this;
+        }
+
+        public Builder setBody(String body) {
+            this.body = body;
+            return this;
+        }
+
+        public EmailDetails build() {
+            return new EmailDetails(this);
+        }
     }
 
     public String getSubject() {
         return subject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
     public String getFromName() {
         return fromName;
     }
 
-    public void setFromName(String fromName) {
-        this.fromName = fromName;
-    }
-
     public String getBody() {
         return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 }

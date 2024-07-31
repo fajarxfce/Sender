@@ -11,16 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SendMainController implements ActionListener, SendMailObserver {
-//    private EmailListTable model;
-//    private SMTPTableModel smtpTableModel;
-//    private ImportListController importListController;
-//    private int connectionCount;
-//    private JTextArea textAreaSubject;
-//    private JTextArea textAreaFromName;
-//    private JTextArea textAreaBody;
+
     private SendEmailConfig emailConfig;
 
-    public SendMainController(SendEmailConfig emailConfig){
+    public SendMainController(SendEmailConfig emailConfig) {
         this.emailConfig = emailConfig;
     }
 
@@ -28,17 +22,18 @@ public class SendMainController implements ActionListener, SendMailObserver {
     public void actionPerformed(ActionEvent e) {
         List<SMTPServer> smtpServers = getSMTPServers(emailConfig.getSmtpTableModel());
         List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
-        EmailDetails emailDetails = new EmailDetails(emailConfig.getTextAreaSubject().getText(), emailConfig.getTextAreaFromName().getText(), emailConfig.getTextAreaBody().getText());
-        SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, emailConfig.getConnectionCount(), emailDetails);
+        String subject = emailConfig.getTextAreaSubject().getText();
+        String fromName = emailConfig.getTextAreaFromName().getText();
+        String body = emailConfig.getTextAreaBody().getText();
+        int connectionCount = (int) emailConfig.getConnectionCount();
+        EmailDetails emailDetails = new EmailDetails.Builder()
+                .setSubject(subject)
+                .setFromName(fromName)
+                .setBody(body)
+                .build();
+        SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, connectionCount, emailDetails);
         worker.addObserver(this);
-        String command = e.getActionCommand();
-        if ("START".equals(command)) {
-            System.out.println("Start sending email");
-            worker.execute();
-        } else if ("STOP".equals(command)) {
-            System.out.println("Stop sending email");
-            worker.pause();
-        }
+        worker.execute();
 
     }
 
