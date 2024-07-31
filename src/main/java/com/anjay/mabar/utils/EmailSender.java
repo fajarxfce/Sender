@@ -40,7 +40,7 @@ public class EmailSender {
             System.out.println("Email sent successfully.");
         } catch (MessagingException e) {
             System.out.println("Failed to send email.");
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 }

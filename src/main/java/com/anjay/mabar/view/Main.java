@@ -2,6 +2,7 @@ package com.anjay.mabar.view;
 
 import com.anjay.mabar.controllers.ImportListController;
 import com.anjay.mabar.controllers.SelectSMTPController;
+import com.anjay.mabar.controllers.SendMainController;
 import com.anjay.mabar.models.*;
 import com.anjay.mabar.utils.EmailSender;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -27,9 +28,9 @@ public class Main extends JFrame{
     private JButton importSmtp;
     private JButton editButton;
     private JTable smtpTable;
-    private JSpinner spinner1;
-    private JSpinner spinner2;
-    private JSpinner spinner3;
+    private JSpinner spConnection;
+    private JSpinner spPause;
+    private JSpinner spSleep;
     private JButton STOPButton;
     private JButton startButton;
     private JTabbedPane fromTab;
@@ -53,18 +54,17 @@ public class Main extends JFrame{
         SMTPPath smtpPath = new SMTPPath(smtpCount);
         SelectSMTPController selectSMTPController = new SelectSMTPController(smtpPath, smtpTableModel);
         importSmtp.addActionListener(selectSMTPController);
+        spConnection.setValue(2);
+        spSleep.setValue(3000);
 
         EmailListPath emailListPath = new EmailListPath(txtListCount);
         EmailListTable emailListTable = new EmailListTable();
         tableEmailList.setModel(emailListTable);
         importListController = new ImportListController(emailListTable);
         addList.addActionListener(importListController);
-        startButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sendEmails();
-            }
-        });
+
+        SendMainController sendMainController = new SendMainController();
+        startButton.addActionListener(sendMainController);
     }
     private void sendEmails() {
         SMTPTableModel smtpTableModel = (SMTPTableModel) smtpTable.getModel();

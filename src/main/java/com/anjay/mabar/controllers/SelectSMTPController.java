@@ -23,13 +23,16 @@ public class SelectSMTPController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            System.out.println(selectedFile.getAbsolutePath());
-            fetchSmtp(selectedFile.getAbsolutePath());
-        }
+//        JFileChooser fileChooser = new JFileChooser();
+//        int result = fileChooser.showOpenDialog(null);
+//        if (result == JFileChooser.APPROVE_OPTION) {
+//            File selectedFile = fileChooser.getSelectedFile();
+//            System.out.println(selectedFile.getAbsolutePath());
+////            fetchSmtp(selectedFile.getAbsolutePath());
+//            fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
+//        }
+        fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
+
     }
 
     private void fetchSmtp(String path) {
