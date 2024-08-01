@@ -12,7 +12,7 @@ public class SMTPServerFactory {
         int rowCount = smtpTableModel.getRowCount();
         for (int i = 0; i < rowCount; i++) {
             String username = (String) smtpTableModel.getValueAt(i, 1);
-            String password = (String) smtpTableModel.getValueAt(i, 3);
+            String password = (String) smtpTableModel.getValueAt(i, 2);
             smtpServers.add(new SMTPServer(username, password));
         }
         return smtpServers;

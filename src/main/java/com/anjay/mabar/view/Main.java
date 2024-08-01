@@ -7,6 +7,7 @@ import com.anjay.mabar.models.*;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
+import javax.swing.table.TableColumn;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Enumeration;
@@ -94,13 +95,15 @@ public class Main extends JFrame{
         startButton.addActionListener(sendMainController);
         stopButton.addActionListener(sendMainController);
 
-        setupToolbar();
+        int[] columnWidths = {50, 200, 150};
+        setColumnWidths(smtpTable, columnWidths);
     }
 
-    private void setupToolbar() {
-
-
-
+    private void setColumnWidths(JTable table, int[] widths) {
+        for (int i = 0; i < widths.length; i++) {
+            TableColumn column = table.getColumnModel().getColumn(i);
+            column.setPreferredWidth(widths[i]);
+        }
     }
 
     public static void main(String[] args) {

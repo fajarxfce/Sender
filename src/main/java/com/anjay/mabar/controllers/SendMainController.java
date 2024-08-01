@@ -28,7 +28,6 @@ public class SendMainController implements ActionListener, SendMailObserver {
         String body = emailConfig.getTextAreaBody().getText();
         String contentType = emailConfig.getContentType();
 
-        System.out.println(body);
         List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
         List<SMTPServer> smtpServers = SMTPServerFactory.createSMTPServers(smtpTableModel);
@@ -62,16 +61,5 @@ public class SendMainController implements ActionListener, SendMailObserver {
     @Override
     public void onSendMailFailed(String email, String status) {
         updateEmailStatus(email, status);
-    }
-
-    private List<SMTPServer> getSMTPServers(SMTPTableModel smtpTableModel) {
-        List<SMTPServer> smtpServers = new ArrayList<>();
-        int rowCount = smtpTableModel.getRowCount();
-        for (int i = 0; i < rowCount; i++) {
-            String username = (String) smtpTableModel.getValueAt(i, 1);
-            String password = (String) smtpTableModel.getValueAt(i, 3);
-            smtpServers.add(new SMTPServer(username, password));
-        }
-        return smtpServers;
     }
 }

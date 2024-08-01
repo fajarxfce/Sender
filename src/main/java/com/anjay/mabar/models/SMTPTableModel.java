@@ -5,7 +5,7 @@ import javax.swing.table.DefaultTableModel;
 public class SMTPTableModel extends DefaultTableModel {
 
     public SMTPTableModel() {
-        super(new Object[]{"No", "Email Address", "Username", "Password"}, 0);
+        super(new Object[]{"No", "Email Address", "Password"}, 0);
     }
 
     @Override

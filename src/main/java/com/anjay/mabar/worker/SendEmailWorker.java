@@ -30,8 +30,6 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
 
     @Override
     protected Void doInBackground() throws Exception {
-        System.out.println("Email list size: " + emailList.size());
-        System.out.println("SMTP Server size: " + smtpServers.size());
 
         int smtpIndex = 0;
         for (int i = 0; i < emailList.size(); i += 1) {
