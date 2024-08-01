@@ -33,7 +33,7 @@ public class SelectSMTPController implements ActionListener {
 //            fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
 //        }
 
-        fetchSmtp("C:\\Users\\Fajar\\Documents\\testsmtp.csv");
+        fetchSmtp("C:\\Users\\Fajar\\Documents\\smtp.csv");
     }
 
     private void fetchSmtp(String path) {

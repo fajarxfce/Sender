@@ -48,23 +48,20 @@ public class SendMainController implements ActionListener, SendMailObserver {
         int rowCount = emailConfig.getEmailListTable().getRowCount();
         for (int i = 0; i < rowCount; i++) {
             if (emailConfig.getEmailListTable().getValueAt(i, 1).equals(email)) {
-//                System.out.println("Updating email status: " + email + " to " + status);
-                emailConfig.getEmailListTable().setValueAt(status, i, 2); // Assuming the status column is at index 1
+                emailConfig.getEmailListTable().setValueAt(status, i, 2);
                 break;
             }
         }
     }
 
     @Override
-    public void onSendMailSuccess(String email) {
-//        System.out.println("Email sent to: " + email);
-        updateEmailStatus(email, "Failed");
+    public void onSendMailSuccess(String email, String status) {
+        updateEmailStatus(email, status);
     }
 
     @Override
-    public void onSendMailFailed(String message) {
-//        System.out.println("Failed to send email: " + message);
-        updateEmailStatus(message, "Failed");
+    public void onSendMailFailed(String email, String status) {
+        updateEmailStatus(email, status);
     }
 
     private List<SMTPServer> getSMTPServers(SMTPTableModel smtpTableModel) {

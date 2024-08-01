@@ -53,9 +53,6 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String toAddress = emailDetails.getToAddress();
                         String contentType = emailDetails.getContentType();
 
-
-                        System.out.println(body);
-
                         EmailSender.sendEmail(
                                 smtpServer.getUsername(),
                                 smtpServer.getPassword(),
@@ -66,11 +63,9 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                                 body,
                                 contentType
                         );
-                        notifySent(email);
-                        System.out.println(subject);
+                        notifySent(email, "Sent!");
                     } catch (Exception e) {
-                        notifyError(email);
-//                        System.out.println("Email failed to send to: " + email + " using " + smtpServer.getUsername());
+                        notifyError(email, e.getMessage());
                     }
                     try {
                         Thread.sleep(0);
@@ -93,15 +88,15 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         observers.remove(observer);
     }
 
-    public void notifySent(String email) {
+    public void notifySent(String email, String status) {
         for (SendMailObserver observer : observers) {
-            observer.onSendMailSuccess(email);
+            observer.onSendMailSuccess(email, status);
         }
     }
 
-    public void notifyError(String email) {
+    public void notifyError(String email, String status) {
         for (SendMailObserver observer : observers) {
-            observer.onSendMailFailed(email);
+            observer.onSendMailFailed(email, status);
         }
     }
 
