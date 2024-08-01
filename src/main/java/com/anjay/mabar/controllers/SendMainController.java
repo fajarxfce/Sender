@@ -43,23 +43,17 @@ public class SendMainController implements ActionListener, SendMailObserver {
 
     }
 
-    private void updateEmailStatus(String email, String status) {
-        int rowCount = emailConfig.getEmailListTable().getRowCount();
-        for (int i = 0; i < rowCount; i++) {
-            if (emailConfig.getEmailListTable().getValueAt(i, 1).equals(email)) {
-                emailConfig.getEmailListTable().setValueAt(status, i, 2);
-                break;
-            }
-        }
+    private void updateEmailStatus(String status, int index) {
+        emailConfig.getEmailListTable().setValueAt(status, index, 2);
     }
 
     @Override
-    public void onSendMailSuccess(String email, String status) {
-        updateEmailStatus(email, status);
+    public void onSendMailSuccess(String status, int index) {
+        updateEmailStatus(status, index);
     }
 
     @Override
-    public void onSendMailFailed(String email, String status) {
-        updateEmailStatus(email, status);
+    public void onSendMailFailed(String status, int index) {
+        updateEmailStatus(status, index);
     }
 }

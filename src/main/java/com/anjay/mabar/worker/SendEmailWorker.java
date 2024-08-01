@@ -19,6 +19,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private int connectionCount;
     private List<SMTPServer> smtpServers;
     private EmailDetails emailDetails;
+
     public SendEmailWorker(List<String> emailList, List<SMTPServer> smtpServers, int connectionCount, EmailDetails emailDetails) {
         this.emailList = emailList;
         this.smtpServers = smtpServers;
@@ -35,6 +36,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         for (int i = 0; i < emailList.size(); i += 1) {
             SMTPServer smtpServer = smtpServers.get(smtpIndex);
             for (int j = 0; j < 1 && (i + j) < emailList.size(); j++) {
+                int index = i + j;
                 String email = emailList.get(i + j);
                 executorService.submit(() -> {
                     try {
@@ -61,9 +63,9 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                                 body,
                                 contentType
                         );
-                        notifySent(email, "Sent!");
+                        notifySent("Sent!", index);
                     } catch (Exception e) {
-                        notifyError(email, e.getMessage());
+                        notifyError(e.getMessage(), index);
                     }
                     try {
                         Thread.sleep(0);
@@ -86,15 +88,15 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         observers.remove(observer);
     }
 
-    public void notifySent(String email, String status) {
+    public void notifySent(String status, int index) {
         for (SendMailObserver observer : observers) {
-            observer.onSendMailSuccess(email, status);
+            observer.onSendMailSuccess(status, index);
         }
     }
 
-    public void notifyError(String email, String status) {
+    public void notifyError(String status, int index) {
         for (SendMailObserver observer : observers) {
-            observer.onSendMailFailed(email, status);
+            observer.onSendMailFailed(status, index);
         }
     }
 
