@@ -1,5 +1,6 @@
 package com.anjay.mabar.controllers;
 
+import com.anjay.mabar.factory.EmailListFactory;
 import com.anjay.mabar.factory.SMTPServerFactory;
 import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
@@ -21,6 +22,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
     @Override
     public void actionPerformed(ActionEvent e) {
         SMTPTableModel smtpTableModel = emailConfig.getSmtpTableModel();
+        EmailListTable emailListTable = emailConfig.getEmailListTable();
         String subjectText = emailConfig.getTextAreaSubject().getText();
         String fromNameText = emailConfig.getTextAreaFromName().getText();
         List<String> subjectList = Arrays.asList(subjectText.split("\\r?\\n"));
@@ -28,16 +30,17 @@ public class SendMainController implements ActionListener, SendMailObserver {
         String body = emailConfig.getTextAreaBody().getText();
         String contentType = emailConfig.getContentType();
 
-        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
+//        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
         List<SMTPServer> smtpServers = SMTPServerFactory.createSMTPServers(smtpTableModel);
+        List<EmailList> emailLists = EmailListFactory.createEmailList(emailListTable);
         EmailDetails emailDetails = new EmailDetails.Builder()
                 .setSubject(subjectList)
                 .setFromName(fromNameList)
                 .setBody(body)
                 .setContentType(contentType)
                 .build();
-        SendEmailWorker worker = new SendEmailWorker(emailList, smtpServers, connectionCount, emailDetails);
+        SendEmailWorker worker = new SendEmailWorker(emailLists, smtpServers, connectionCount, emailDetails);
         worker.addObserver(this);
         worker.execute();
 

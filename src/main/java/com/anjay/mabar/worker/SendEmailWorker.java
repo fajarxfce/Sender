@@ -1,6 +1,7 @@
 package com.anjay.mabar.worker;
 
 import com.anjay.mabar.models.EmailDetails;
+import com.anjay.mabar.models.EmailList;
 import com.anjay.mabar.models.SMTPServer;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.utils.EmailSender;
@@ -14,13 +15,13 @@ import java.util.concurrent.Executors;
 
 public class SendEmailWorker extends SwingWorker<Void, String> {
     private ExecutorService executorService;
-    private List<String> emailList;
+    private List<EmailList> emailList;
     private List<SendMailObserver> observers;
     private int connectionCount;
     private List<SMTPServer> smtpServers;
     private EmailDetails emailDetails;
 
-    public SendEmailWorker(List<String> emailList, List<SMTPServer> smtpServers, int connectionCount, EmailDetails emailDetails) {
+    public SendEmailWorker(List<EmailList> emailList, List<SMTPServer> smtpServers, int connectionCount, EmailDetails emailDetails) {
         this.emailList = emailList;
         this.smtpServers = smtpServers;
         this.connectionCount = connectionCount;
@@ -31,16 +32,14 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
 
     @Override
     protected Void doInBackground() throws Exception {
-
         int smtpIndex = 0;
         for (int i = 0; i < emailList.size(); i += 1) {
             SMTPServer smtpServer = smtpServers.get(smtpIndex);
             for (int j = 0; j < 1 && (i + j) < emailList.size(); j++) {
                 int index = i + j;
-                String email = emailList.get(i + j);
+                String email = emailList.get(index).getEmailAddress();
                 executorService.submit(() -> {
                     try {
-
                         List<String> subjectList = emailDetails.getSubject();
                         Collections.shuffle(subjectList);
                         String subject = subjectList.get(0);
