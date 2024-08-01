@@ -8,6 +8,7 @@ public class EmailDetails {
     private String body;
     private String toAddress;
     private String contentType;
+    private String messageID;
 
     private EmailDetails(Builder builder) {
         this.subject = builder.subject;
@@ -15,6 +16,7 @@ public class EmailDetails {
         this.toAddress = builder.toAddress;
         this.contentType = builder.contentType;
         this.body = builder.body;
+        this.messageID = builder.messageID;
     }
 
     public static class Builder {
@@ -23,6 +25,7 @@ public class EmailDetails {
         private String body;
         private String toAddress;
         private String contentType;
+        private String messageID;
 
         public Builder setSubject(List<String> subject) {
             this.subject = subject;
@@ -49,6 +52,11 @@ public class EmailDetails {
             return this;
         }
 
+        public Builder setMessageID(String messageID) {
+            this.messageID = messageID;
+            return this;
+        }
+
         public EmailDetails build() {
             return new EmailDetails(this);
         }
@@ -68,6 +76,10 @@ public class EmailDetails {
 
     public String getContentType() {
         return contentType;
+    }
+
+    public String getMessageID() {
+        return messageID;
     }
 
     public String getBody() {

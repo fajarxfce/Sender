@@ -3,6 +3,7 @@ package com.anjay.mabar.models;
 import com.anjay.mabar.controllers.ImportListController;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SendEmailConfig {
     private EmailListTable emailListTable;
@@ -14,6 +15,7 @@ public class SendEmailConfig {
     private JTextArea textAreaBody;
     private String contentType;
     private EmailHeaderTable headerTable;
+    private JTextField messageID;
 
     private SendEmailConfig(Builder builder) {
         this.emailListTable = builder.emailListTable;
@@ -25,6 +27,7 @@ public class SendEmailConfig {
         this.textAreaBody = builder.textAreaBody;
         this.contentType = builder.contentType;
         this.headerTable = builder.headerTable;
+        this.messageID = builder.messageID;
     }
 
     public static class Builder {
@@ -37,7 +40,7 @@ public class SendEmailConfig {
         private JTextArea textAreaBody;
         private String contentType;
         private EmailHeaderTable headerTable;
-
+        private JTextField messageID;
         public Builder setEmailListTable(EmailListTable emailListTable) {
             this.emailListTable = emailListTable;
             return this;
@@ -83,6 +86,11 @@ public class SendEmailConfig {
             return this;
         }
 
+        public Builder setMessageID(JTextField messageID) {
+            this.messageID = messageID;
+            return this;
+        }
+
         public SendEmailConfig build() {
             return new SendEmailConfig(this);
         }
@@ -120,6 +128,9 @@ public class SendEmailConfig {
         return contentType;
     }
 
+    public JTextField getMessageID() {
+        return messageID;
+    }
     public EmailHeaderTable getHeaderTable() {
         return headerTable;
     }

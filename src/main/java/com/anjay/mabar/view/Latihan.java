@@ -53,6 +53,8 @@ public class Latihan extends JFrame {
     private JButton clearHeader;
     private JButton importHeader;
     private JButton addHeader;
+    private JButton saveButton;
+    private JTextField txtMessageId;
     private ImportListController importListController;
     private ButtonGroup letterMode;
 
@@ -94,6 +96,7 @@ public class Latihan extends JFrame {
                 .setConnection((int) spConnection.getValue())
                 .setSubject(textAreaSubject)
                 .setFromName(textAreaFromName)
+                .setMessageID(txtMessageId)
                 .setContentType(contentType)
                 .setBody(textAreaBody)
                 .build();

@@ -1,11 +1,13 @@
 package com.anjay.mabar.worker;
 
 import com.anjay.mabar.models.EmailDetails;
+import com.anjay.mabar.models.EmailHeader;
 import com.anjay.mabar.models.EmailList;
 import com.anjay.mabar.models.SMTPServer;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.utils.EmailSender;
 import com.anjay.mabar.utils.SimpleMail;
+import org.simplejavamail.api.email.Email;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -20,11 +22,13 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private List<SendMailObserver> observers;
     private int connectionCount;
     private List<SMTPServer> smtpServers;
+    private List<EmailHeader> headers;
     private EmailDetails emailDetails;
 
-    public SendEmailWorker(List<EmailList> emailList, List<SMTPServer> smtpServers, int connectionCount, EmailDetails emailDetails) {
+    public SendEmailWorker(List<EmailList> emailList, List<SMTPServer> smtpServers, List<EmailHeader> headers, int connectionCount, EmailDetails emailDetails) {
         this.emailList = emailList;
         this.smtpServers = smtpServers;
+        this.headers = headers;
         this.connectionCount = connectionCount;
         this.emailDetails = emailDetails;
         this.observers = new ArrayList<>();
@@ -52,9 +56,10 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String body = emailDetails.getBody();
                         String toAddress = emailDetails.getToAddress();
                         String contentType = emailDetails.getContentType();
+                        String messageId = emailDetails.getMessageID();
 
                         SimpleMail.sendMail(
-                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body);
+                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers);
 
 //                        EmailSender.sendEmail(
 //                                smtpServer.getUsername(),
