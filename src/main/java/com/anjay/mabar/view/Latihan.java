@@ -8,6 +8,8 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Latihan extends JFrame {
     private JPanel root;
@@ -44,12 +46,13 @@ public class Latihan extends JFrame {
     private JButton clearAllButton;
     private JButton clearSuccessButton;
     private JTable tableEmailList;
-    private JTable table2;
+    private JTable headerTable;
     private JTable table3;
     private JScrollPane jScrollSmtp;
     private JLabel txtListCount;
-    private JButton clearButton;
-    private JButton importButton;
+    private JButton clearHeader;
+    private JButton importHeader;
+    private JButton addHeader;
     private ImportListController importListController;
     private ButtonGroup letterMode;
 
@@ -63,6 +66,9 @@ public class Latihan extends JFrame {
         letterMode = new ButtonGroup();
         letterMode.add(HTMLRadioButton);
         letterMode.add(plaintTextRadioButton);
+
+        EmailHeaderTable emailHeaderTable = new EmailHeaderTable();
+        headerTable.setModel(emailHeaderTable);
 
         SMTPTableModel smtpTableModel = new SMTPTableModel();
         smtpTable.setModel(smtpTableModel);
@@ -83,6 +89,7 @@ public class Latihan extends JFrame {
         SendEmailConfig sendEmailConfig = new SendEmailConfig.Builder()
                 .setEmailListTable(emailListTable)
                 .setSmtpTableModel(smtpTableModel)
+                .setHeaderTable(emailHeaderTable)
                 .setListController(importListController)
                 .setConnection((int) spConnection.getValue())
                 .setSubject(textAreaSubject)
@@ -97,6 +104,13 @@ public class Latihan extends JFrame {
 
         int[] columnWidths = {50, 200, 150};
         setColumnWidths(smtpTable, columnWidths);
+
+        addHeader.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                emailHeaderTable.addRow(new Object[]{headerTable.getRowCount() + 1, "", ""});
+            }
+        });
 
     }
 

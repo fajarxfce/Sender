@@ -13,6 +13,7 @@ public class SendEmailConfig {
     private JTextArea textAreaFromName;
     private JTextArea textAreaBody;
     private String contentType;
+    private EmailHeaderTable headerTable;
 
     private SendEmailConfig(Builder builder) {
         this.emailListTable = builder.emailListTable;
@@ -23,6 +24,7 @@ public class SendEmailConfig {
         this.textAreaFromName = builder.textAreaFromName;
         this.textAreaBody = builder.textAreaBody;
         this.contentType = builder.contentType;
+        this.headerTable = builder.headerTable;
     }
 
     public static class Builder {
@@ -34,6 +36,7 @@ public class SendEmailConfig {
         private JTextArea textAreaFromName;
         private JTextArea textAreaBody;
         private String contentType;
+        private EmailHeaderTable headerTable;
 
         public Builder setEmailListTable(EmailListTable emailListTable) {
             this.emailListTable = emailListTable;
@@ -75,6 +78,11 @@ public class SendEmailConfig {
             return this;
         }
 
+        public Builder setHeaderTable(EmailHeaderTable headerTable) {
+            this.headerTable = headerTable;
+            return this;
+        }
+
         public SendEmailConfig build() {
             return new SendEmailConfig(this);
         }
@@ -110,5 +118,9 @@ public class SendEmailConfig {
 
     public String getContentType() {
         return contentType;
+    }
+
+    public EmailHeaderTable getHeaderTable() {
+        return headerTable;
     }
 }
