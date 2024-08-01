@@ -17,8 +17,6 @@ public class SMTPTableModel extends DefaultTableModel {
                 return String.class;
             case 2:
                 return String.class;
-            case 3:
-                return String.class;
             default:
                 return Object.class;
         }
@@ -26,6 +24,6 @@ public class SMTPTableModel extends DefaultTableModel {
 
     @Override
     public boolean isCellEditable(int row, int column) {
-        return false; // Make cells non-editable
+        return true; // Make cells non-editable
     }
 }

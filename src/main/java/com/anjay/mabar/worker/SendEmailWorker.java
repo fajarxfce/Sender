@@ -63,9 +63,9 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                                 body,
                                 contentType
                         );
-                        notifySent("Sent!", index);
+                        notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
-                        notifyError(e.getMessage(), index);
+                        notifyError(e.getMessage(), index, smtpServer.getUsername());
                     }
                     try {
                         Thread.sleep(0);
@@ -88,15 +88,15 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         observers.remove(observer);
     }
 
-    public void notifySent(String status, int index) {
+    public void notifySent(String status, int index, String sendBy) {
         for (SendMailObserver observer : observers) {
-            observer.onSendMailSuccess(status, index);
+            observer.onSendMailSuccess(status, index, sendBy);
         }
     }
 
-    public void notifyError(String status, int index) {
+    public void notifyError(String status, int index, String sendBy) {
         for (SendMailObserver observer : observers) {
-            observer.onSendMailFailed(status, index);
+            observer.onSendMailFailed(status, index, sendBy);
         }
     }
 

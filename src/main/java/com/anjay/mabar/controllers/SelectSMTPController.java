@@ -41,7 +41,7 @@ public class SelectSMTPController implements ActionListener {
 
         int count = model.getRowCount();
         for (Smtp smtp : smtps) {
-            model.addRow(new Object[]{count++ + 1, smtp.getEmailAddress(), smtp.getUsername(), smtp.getPassword()});
+            model.addRow(new Object[]{count++ + 1, smtp.getEmailAddress(), smtp.getPassword()});
         }
         smtpPath.setCount(smtps.size());
     }

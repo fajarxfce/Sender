@@ -68,7 +68,9 @@
                 <children>
                   <component id="7a2bf" class="javax.swing.JTable" binding="smtpTable">
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <enabled value="true"/>
+                    </properties>
                   </component>
                 </children>
               </scrollpane>
