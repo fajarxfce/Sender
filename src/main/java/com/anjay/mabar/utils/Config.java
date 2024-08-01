@@ -2,5 +2,5 @@ package com.anjay.mabar.utils;
 
 public class Config {
     public static final String SMTP_HOST = "smtp.gmail.com";
-    public static final String SMTP_PORT = "587";
+    public static final int SMTP_PORT = 587;
 }

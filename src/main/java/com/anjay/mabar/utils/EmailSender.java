@@ -1,12 +1,15 @@
 package com.anjay.mabar.utils;
 
-import com.anjay.mabar.models.EmailHeaderTable;
+//import com.anjay.mabar.models.EmailHeaderTable;
+//
+//import javax.mail.*;
+//import javax.mail.internet.InternetAddress;
+//import javax.mail.internet.MimeMessage;
+import jakarta.mail.MessagingException;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import java.io.*;
 import java.util.Properties;
+import java.util.UUID;
 
 public class EmailSender {
 
@@ -19,42 +22,48 @@ public class EmailSender {
         properties.put("mail.smtp.starttls.enable", "true");
 
         // Create a session with an authenticator
-        Authenticator auth = new Authenticator() {
-            public PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(username, password);
-            }
-        };
+//        Authenticator auth = new Authenticator() {
+//            public PasswordAuthentication getPasswordAuthentication() {
+//                return new PasswordAuthentication(username, password);
+//            }
+//        };
+//
+//        Session session = Session.getInstance(properties, auth);
+//        // Create a new email message
+//        Message msg = new MimeMessage(session);
+//        msg.setFrom(new InternetAddress(username, fromName));
+//        msg.setContent("Content-Type", "text/html; charset=UTF-8");
+//        String messageId = generateMessageId();
+//        msg.setHeader("Message-ID", messageId);
+//
+//        File selectedFile = new File("C:\\Users\\Fajar\\Documents\\sender\\headers.txt");
+//        try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
+//            String line;
+//            while ((line = reader.readLine()) != null) {
+//                String[] parts = line.split("\\|");
+//                if (parts.length == 2) {
+//                    msg.addHeader(StringUtil.replacePlaceholders(parts[0]), StringUtil.replacePlaceholders(parts[1]));
+//                }
+//            }
+//        } catch (IOException ex) {
+//            ex.printStackTrace();
+//        }
+//
+//        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
+//        if (bccAddress != null && !bccAddress.isEmpty()) {
+//            msg.setRecipient(Message.RecipientType.BCC, new InternetAddress(bccAddress));
+//        }
+//        msg.setSubject(StringUtil.replacePlaceholders(subject));
+////            msg.setText(StringUtil.replacePlaceholders(message));
+//        msg.setContent(
+//                message,
+//                "text/html");
+//        // Send the email
+//        Transport.send(msg);
 
-        Session session = Session.getInstance(properties, auth);
-        // Create a new email message
-        Message msg = new MimeMessage(session);
-        msg.setFrom(new InternetAddress(username, fromName));
-        msg.setContent("Content-Type", "text/html; charset=UTF-8");
+    }
 
-        File selectedFile = new File("C:\\Users\\Fajar\\Documents\\sender\\headers.txt");
-        try (BufferedReader reader = new BufferedReader(new FileReader(selectedFile))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] parts = line.split("\\|");
-                if (parts.length == 2) {
-                    msg.addHeader(StringUtil.replacePlaceholders(parts[0]), StringUtil.replacePlaceholders(parts[1]));
-                }
-            }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-
-        msg.setRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
-        if (bccAddress != null && !bccAddress.isEmpty()) {
-            msg.setRecipient(Message.RecipientType.BCC, new InternetAddress(bccAddress));
-        }
-        msg.setSubject(StringUtil.replacePlaceholders(subject));
-//            msg.setText(StringUtil.replacePlaceholders(message));
-        msg.setContent(
-                "<h1>This is actual message embedded in HTML tags</h1>",
-                "text/html");
-        // Send the email
-        Transport.send(msg);
-
+    private static String generateMessageId() {
+        return "<" + UUID.randomUUID().toString() + "@" + "microsoft.com" + ">";
     }
 }

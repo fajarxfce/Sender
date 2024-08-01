@@ -5,6 +5,7 @@ import com.anjay.mabar.models.EmailList;
 import com.anjay.mabar.models.SMTPServer;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.utils.EmailSender;
+import com.anjay.mabar.utils.SimpleMail;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -52,16 +53,19 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String toAddress = emailDetails.getToAddress();
                         String contentType = emailDetails.getContentType();
 
-                        EmailSender.sendEmail(
-                                smtpServer.getUsername(),
-                                smtpServer.getPassword(),
-                                fromName,
-                                "support@mail.google.com",
-                                email,
-                                subject,
-                                body,
-                                contentType
-                        );
+                        SimpleMail.sendMail(
+                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body);
+
+//                        EmailSender.sendEmail(
+//                                smtpServer.getUsername(),
+//                                smtpServer.getPassword(),
+//                                fromName,
+//                                "support@mail.google.com",
+//                                email,
+//                                subject,
+//                                body,
+//                                contentType
+//                        );
                         notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
                         notifyError(e.getMessage(), index, smtpServer.getUsername());
