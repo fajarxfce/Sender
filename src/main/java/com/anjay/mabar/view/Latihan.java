@@ -6,6 +6,7 @@ import com.anjay.mabar.controllers.SelectSMTPController;
 import com.anjay.mabar.controllers.SendMainController;
 import com.anjay.mabar.models.*;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
+import org.simplejavamail.api.email.ContentTransferEncoding;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
@@ -50,7 +51,7 @@ public class Latihan extends JFrame {
     private JSpinner spThread;
     private JSpinner spConnection;
     private JSpinner spSleep;
-    private JComboBox encoding;
+    private JComboBox<ContentTransferEncoding> encoding;
     private JTextField txtReplyTo;
     private JTextField txtBounceTo;
     private JButton btnStart;
@@ -61,6 +62,8 @@ public class Latihan extends JFrame {
 
     public Latihan(){
         add(root);
+        encoding.setModel(new DefaultComboBoxModel<>(ContentTransferEncoding.values()));
+        encoding.setSelectedIndex(6);
 
         fromTab.addTab("Subject", subjectPane);
         fromTab.addTab("From Name", fromNamePane);
@@ -72,6 +75,8 @@ public class Latihan extends JFrame {
         priority.addItem("Low");
         priority.addItem("Lowest");
         priority.setSelectedIndex(2);
+
+
 
         letterMode = new ButtonGroup();
         letterMode.add(HTMLRadioButton);
@@ -109,7 +114,7 @@ public class Latihan extends JFrame {
                 .setBody(textAreaBody)
                 .build();
 
-        SendingConfig sendingConfig = new SendingConfig(spConnection, spThread, spSleep, priority);
+        SendingConfig sendingConfig = new SendingConfig(spConnection, spThread, spSleep, priority, encoding);
 
         SendMainController sendMainController = new SendMainController(sendEmailConfig, sendingConfig);
         btnStart.addActionListener(sendMainController);

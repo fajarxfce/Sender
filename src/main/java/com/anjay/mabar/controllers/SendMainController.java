@@ -6,6 +6,7 @@ import com.anjay.mabar.factory.SMTPServerFactory;
 import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.worker.SendEmailWorker;
+import org.simplejavamail.api.email.ContentTransferEncoding;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -40,7 +41,12 @@ public class SendMainController implements ActionListener, SendMailObserver {
         String thread = config.getThreadCount().getValue().toString();
         int priority = config.getMailPriority().getSelectedIndex() + 1;
 
-        SendConfig sendConfig = new SendConfig(con, thread, sleep, priority);
+        ComboBoxModel<ContentTransferEncoding> encoding = config.getEncoding().getModel();
+        ContentTransferEncoding contentTransferEncoding = (ContentTransferEncoding) encoding.getSelectedItem();
+
+        SendConfig sendConfig = new SendConfig(con, thread, sleep, priority, contentTransferEncoding);
+
+
 
         List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();

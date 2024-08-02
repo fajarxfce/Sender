@@ -4,6 +4,7 @@ import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.utils.EmailSender;
 import com.anjay.mabar.utils.SimpleMail;
+import org.simplejavamail.api.email.ContentTransferEncoding;
 import org.simplejavamail.api.email.Email;
 
 import javax.swing.*;
@@ -65,11 +66,11 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String toAddress = emailDetails.getToAddress();
                         String contentType = emailDetails.getContentType();
                         String messageId = emailDetails.getMessageID();
-
+                        ContentTransferEncoding encoding = sendConfig.getContentTransferEncoding();
                         System.out.println("Thread : " + Thread.currentThread().getName());
 
-//                        SimpleMail.sendMail(
-//                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority);
+                        SimpleMail.sendMail(
+                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority, encoding );
 
                         notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
