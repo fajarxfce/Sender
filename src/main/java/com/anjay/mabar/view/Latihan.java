@@ -21,15 +21,9 @@ public class Latihan extends JFrame {
     private JPanel emailListPane;
     private JPanel letterPane;
     private JPanel letterPanes;
-    private JPanel sendPane;
     private JRadioButton HTMLRadioButton;
     private JRadioButton plaintTextRadioButton;
     private JTextArea textAreaBody;
-    private JSpinner spConnection;
-    private JSpinner spPause;
-    private JSpinner spSleep;
-    private JButton stopButton;
-    private JButton startButton;
     private JLabel smtpCount;
     private JButton editButton;
     private JButton importSmtp;
@@ -46,7 +40,6 @@ public class Latihan extends JFrame {
     private JButton clearSuccessButton;
     private JTable tableEmailList;
     private JTable headerTable;
-    private JTable table3;
     private JScrollPane jScrollSmtp;
     private JLabel txtListCount;
     private JButton clearHeader;
@@ -54,6 +47,14 @@ public class Latihan extends JFrame {
     private JButton addHeader;
     private JButton saveHeader;
     private JTextField txtMessageId;
+    private JSpinner spThread;
+    private JSpinner spConnection;
+    private JSpinner spSleep;
+    private JComboBox encoding;
+    private JTextField txtReplyTo;
+    private JTextField txtBounceTo;
+    private JButton btnStart;
+    private JButton btnStop;
     private JComboBox priority;
     private ImportListController importListController;
     private ButtonGroup letterMode;
@@ -108,11 +109,11 @@ public class Latihan extends JFrame {
                 .setBody(textAreaBody)
                 .build();
 
-        SendingConfig sendingConfig = new SendingConfig(spConnection, spSleep, spPause, priority);
+        SendingConfig sendingConfig = new SendingConfig(spConnection, spThread, spSleep, priority);
 
         SendMainController sendMainController = new SendMainController(sendEmailConfig, sendingConfig);
-        startButton.addActionListener(sendMainController);
-        stopButton.addActionListener(sendMainController);
+        btnStart.addActionListener(sendMainController);
+        btnStop.addActionListener(sendMainController);
 
         int[] columnWidths = {50, 200, 150};
         setColumnWidths(smtpTable, columnWidths);
@@ -164,7 +165,7 @@ public class Latihan extends JFrame {
     public static void main(String[] args) {
         setupLookAndFeel();
         Latihan main = new Latihan();
-        main.setSize(1200, 800);
+        main.setSize(1500, 800);
         main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         main.setLocationRelativeTo(null);
         main.setVisible(true);

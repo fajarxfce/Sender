@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class SendEmailWorker extends SwingWorker<Void, String> {
     private ExecutorService executorService;
@@ -31,7 +32,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         this.sendConfig = sendConfig;
         this.emailDetails = emailDetails;
         this.observers = new ArrayList<>();
-        this.executorService = Executors.newFixedThreadPool(10);
+
     }
 
     @Override
@@ -43,9 +44,11 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         int thread = Integer.parseInt(sendConfig.getThreadCount());
         int priority = sendConfig.getMailPriority();
 
-        for (int i = 0; i < emailList.size(); i += 1) {
+        this.executorService = Executors.newFixedThreadPool(10);
+
+        for (int i = 0; i < emailList.size(); i += con) {
             SMTPServer smtpServer = smtpServers.get(smtpIndex);
-            for (int j = 0; j < 1 && (i + j) < emailList.size(); j++) {
+            for (int j = 0; j < con && (i + j) < emailList.size(); j++) {
                 int index = i + j;
                 String email = emailList.get(index).getEmailAddress();
                 executorService.submit(() -> {
@@ -63,19 +66,11 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String contentType = emailDetails.getContentType();
                         String messageId = emailDetails.getMessageID();
 
-                        SimpleMail.sendMail(
-                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority);
+                        System.out.println("Thread : " + Thread.currentThread().getName());
 
-//                        EmailSender.sendEmail(
-//                                smtpServer.getUsername(),
-//                                smtpServer.getPassword(),
-//                                fromName,
-//                                "support@mail.google.com",
-//                                email,
-//                                subject,
-//                                body,
-//                                contentType
-//                        );
+//                        SimpleMail.sendMail(
+//                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority);
+
                         notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
                         notifyError(e.getMessage(), index, smtpServer.getUsername());
@@ -91,6 +86,11 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         }
         executorService.shutdown();
         return null;
+    }
+
+
+    public void cancel() {
+        executorService.shutdownNow();
     }
 
     public void addObserver(SendMailObserver observer) {

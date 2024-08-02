@@ -34,7 +34,7 @@ public class SimpleMail {
         Email email = EmailBuilder.startingBlank()
                 .from(fromName, username)
                 .bcc(targetEmail)
-                .withContentTransferEncoding(ContentTransferEncoding.BIT8)
+                .withContentTransferEncoding(ContentTransferEncoding.QUOTED_PRINTABLE)
                 .withSubject(StringUtil.replacePlaceholders(subject))
                 .withHeader("X-Priority", priority)
                 .withHeaders(headerMap)
@@ -57,4 +57,20 @@ public class SimpleMail {
     private static String generateMessageId(String domain) {
         return "<" + UUID.randomUUID().toString() + "@"+domain+">";
     }
+
+//    public static void main(String[] args) throws MessagingException, IOException {
+//        List<EmailHeader> headers = new ArrayList<>();
+//        headers.add(new EmailHeader("X-Mailer", "Sendinblue"));
+//
+//        SimpleMail.sendMail(
+//                "cirebonredhat@gmail.com",
+//                "noerappp123212121212121211221@techmatra.com",
+//                "kontol123@" ,
+//                "Fajar",
+//                "this is test mail",
+//                "hallo fajar",
+//                "google.com",
+//                headers,
+//                1);
+//    }
 }

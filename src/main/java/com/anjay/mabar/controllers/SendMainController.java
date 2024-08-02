@@ -23,6 +23,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getActionCommand());
         SMTPTableModel smtpTableModel = emailConfig.getSmtpTableModel();
         EmailListTable emailListTable = emailConfig.getEmailListTable();
         EmailHeaderTable headerTable = emailConfig.getHeaderTable();
@@ -39,7 +40,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
         String thread = config.getThreadCount().getValue().toString();
         int priority = config.getMailPriority().getSelectedIndex() + 1;
 
-        SendConfig sendConfig = new SendConfig(con, sleep, thread, priority);
+        SendConfig sendConfig = new SendConfig(con, thread, sleep, priority);
 
         List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
@@ -55,8 +56,11 @@ public class SendMainController implements ActionListener, SendMailObserver {
                 .build();
         SendEmailWorker worker = new SendEmailWorker(emailLists, smtpServers, emailHeaders,  connectionCount, emailDetails, sendConfig);
         worker.addObserver(this);
-        worker.execute();
-
+        if (e.getActionCommand().equals("START")) {
+            worker.execute();
+        } else {
+            worker.cancel();
+        }
     }
 
     private void updateEmailStatus(String status, int index, String sendBy) {
