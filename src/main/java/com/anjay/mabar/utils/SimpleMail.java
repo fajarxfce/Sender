@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SimpleMail {
 
-    public static void sendMail(String targetEmail, String username, String password, String fromName, String subject, String body, String messageId, List<EmailHeader> headers) throws MessagingException, IOException {
+    public static void sendMail(String targetEmail, String username, String password, String fromName, String subject, String body, String messageId, List<EmailHeader> headers, int priority) throws MessagingException, IOException {
 
 //        Calendar icsCalendar = new Calendar();
 //        icsCalendar.getProperties().add(new ProdId("-//Events Calendar//iCal4j 1.0//EN"));
@@ -36,10 +36,11 @@ public class SimpleMail {
                 .bcc(targetEmail)
                 .withContentTransferEncoding(ContentTransferEncoding.BIT8)
                 .withSubject(StringUtil.replacePlaceholders(subject))
-//                .withHeaders(headerMap)
-//                .withBounceTo("bounce@" + "techmatra.com")
-//                .withReplyTo("no-reply@techmatra.com")
-//                .fixingMessageId(generateMessageId(messageId))
+                .withHeader("X-Priority", priority)
+                .withHeaders(headerMap)
+                .withBounceTo("bounce@" + "techmatra.com")
+                .withReplyTo("no-reply@techmatra.com")
+                .fixingMessageId(generateMessageId(messageId))
                 .withHTMLText(StringUtil.replacePlaceholders(body))
                 .buildEmail();
 

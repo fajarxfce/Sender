@@ -1,9 +1,6 @@
 package com.anjay.mabar.worker;
 
-import com.anjay.mabar.models.EmailDetails;
-import com.anjay.mabar.models.EmailHeader;
-import com.anjay.mabar.models.EmailList;
-import com.anjay.mabar.models.SMTPServer;
+import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
 import com.anjay.mabar.utils.EmailSender;
 import com.anjay.mabar.utils.SimpleMail;
@@ -24,12 +21,14 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private List<SMTPServer> smtpServers;
     private List<EmailHeader> headers;
     private EmailDetails emailDetails;
+    private SendConfig sendConfig;
 
-    public SendEmailWorker(List<EmailList> emailList, List<SMTPServer> smtpServers, List<EmailHeader> headers, int connectionCount, EmailDetails emailDetails) {
+    public SendEmailWorker(List<EmailList> emailList, List<SMTPServer> smtpServers, List<EmailHeader> headers, int connectionCount, EmailDetails emailDetails, SendConfig sendConfig) {
         this.emailList = emailList;
         this.smtpServers = smtpServers;
         this.headers = headers;
         this.connectionCount = connectionCount;
+        this.sendConfig = sendConfig;
         this.emailDetails = emailDetails;
         this.observers = new ArrayList<>();
         this.executorService = Executors.newFixedThreadPool(10);
@@ -38,6 +37,12 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     @Override
     protected Void doInBackground() throws Exception {
         int smtpIndex = 0;
+
+        int con = Integer.parseInt(sendConfig.getConnectionCount());
+        int sleep = Integer.parseInt(sendConfig.getSleepTime());
+        int thread = Integer.parseInt(sendConfig.getThreadCount());
+        int priority = sendConfig.getMailPriority();
+
         for (int i = 0; i < emailList.size(); i += 1) {
             SMTPServer smtpServer = smtpServers.get(smtpIndex);
             for (int j = 0; j < 1 && (i + j) < emailList.size(); j++) {
@@ -59,7 +64,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String messageId = emailDetails.getMessageID();
 
                         SimpleMail.sendMail(
-                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers);
+                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority);
 
 //                        EmailSender.sendEmail(
 //                                smtpServer.getUsername(),
@@ -76,7 +81,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         notifyError(e.getMessage(), index, smtpServer.getUsername());
                     }
                     try {
-                        Thread.sleep(0);
+                        Thread.sleep(sleep);
                     } catch (InterruptedException e) {
                         throw new RuntimeException(e);
                     }

@@ -15,9 +15,10 @@ import java.util.*;
 public class SendMainController implements ActionListener, SendMailObserver {
 
     private SendEmailConfig emailConfig;
-
-    public SendMainController(SendEmailConfig emailConfig) {
+    private SendingConfig config;
+    public SendMainController(SendEmailConfig emailConfig, SendingConfig config) {
         this.emailConfig = emailConfig;
+        this.config = config;
     }
 
     @Override
@@ -33,7 +34,14 @@ public class SendMainController implements ActionListener, SendMailObserver {
         String contentType = emailConfig.getContentType();
         String messageID = emailConfig.getMessageID().getText();
 
-//        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
+        String con = config.getConnectionCount().getValue().toString();
+        String sleep = config.getSleepTime().getValue().toString();
+        String thread = config.getThreadCount().getValue().toString();
+        int priority = config.getMailPriority().getSelectedIndex() + 1;
+
+        SendConfig sendConfig = new SendConfig(con, sleep, thread, priority);
+
+        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
         List<SMTPServer> smtpServers = SMTPServerFactory.createSMTPServers(smtpTableModel);
         List<EmailList> emailLists = EmailListFactory.createEmailList(emailListTable);
@@ -45,7 +53,7 @@ public class SendMainController implements ActionListener, SendMailObserver {
                 .setMessageID(messageID)
                 .setContentType(contentType)
                 .build();
-        SendEmailWorker worker = new SendEmailWorker(emailLists, smtpServers, emailHeaders,  connectionCount, emailDetails);
+        SendEmailWorker worker = new SendEmailWorker(emailLists, smtpServers, emailHeaders,  connectionCount, emailDetails, sendConfig);
         worker.addObserver(this);
         worker.execute();
 

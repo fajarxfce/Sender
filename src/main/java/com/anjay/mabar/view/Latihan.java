@@ -1,5 +1,6 @@
 package com.anjay.mabar.view;
 
+import com.anjay.mabar.controllers.CustomHeaderController;
 import com.anjay.mabar.controllers.ImportListController;
 import com.anjay.mabar.controllers.SelectSMTPController;
 import com.anjay.mabar.controllers.SendMainController;
@@ -8,8 +9,6 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class Latihan extends JFrame {
     private JPanel root;
@@ -53,8 +52,9 @@ public class Latihan extends JFrame {
     private JButton clearHeader;
     private JButton importHeader;
     private JButton addHeader;
-    private JButton saveButton;
+    private JButton saveHeader;
     private JTextField txtMessageId;
+    private JComboBox priority;
     private ImportListController importListController;
     private ButtonGroup letterMode;
 
@@ -64,6 +64,13 @@ public class Latihan extends JFrame {
         fromTab.addTab("Subject", subjectPane);
         fromTab.addTab("From Name", fromNamePane);
         fromTab.addTab("From Mail", fromMailPane);
+
+        priority.addItem("Highest");
+        priority.addItem("High");
+        priority.addItem("Normal");
+        priority.addItem("Low");
+        priority.addItem("Lowest");
+        priority.setSelectedIndex(2);
 
         letterMode = new ButtonGroup();
         letterMode.add(HTMLRadioButton);
@@ -101,19 +108,24 @@ public class Latihan extends JFrame {
                 .setBody(textAreaBody)
                 .build();
 
-        SendMainController sendMainController = new SendMainController(sendEmailConfig);
+        SendingConfig sendingConfig = new SendingConfig(spConnection, spSleep, spPause, priority);
+
+        SendMainController sendMainController = new SendMainController(sendEmailConfig, sendingConfig);
         startButton.addActionListener(sendMainController);
         stopButton.addActionListener(sendMainController);
 
         int[] columnWidths = {50, 200, 150};
         setColumnWidths(smtpTable, columnWidths);
 
-        addHeader.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                emailHeaderTable.addRow(new Object[]{headerTable.getRowCount() + 1, "", ""});
-            }
-        });
+        CustomHeaderController headerController = new CustomHeaderController(emailHeaderTable, headerTable);
+        addHeader.addActionListener(headerController);
+        importHeader.addActionListener(headerController);
+        clearHeader.addActionListener(headerController);
+        saveHeader.addActionListener(headerController);
+
+        createSubject();
+        createFromName();
+        createFromMail();
 
     }
 
@@ -122,6 +134,31 @@ public class Latihan extends JFrame {
             TableColumn column = table.getColumnModel().getColumn(i);
             column.setPreferredWidth(widths[i]);
         }
+    }
+
+    private void createSubject(){
+        textAreaSubject.append("Just test my mailrand str : ##randstr28##\n");
+        textAreaSubject.append("Subject lagi : ##randstr28##\n");
+        textAreaSubject.append("Test Subject : ##randstr28##\n");
+        textAreaSubject.append("Subject coy : ##randstr28##\n");
+    }
+
+    private void createFromName(){
+        textAreaFromName.append("Pajar Tampan\n");
+        textAreaFromName.append("Pajar Ganteng\n");
+        textAreaFromName.append("Kirik\n");
+        textAreaFromName.append("Riski\n");
+        textAreaFromName.append("Fajar\n");
+        textAreaFromName.append("Jokowi\n");
+        textAreaFromName.append("Pajar Anjay\n");
+    }
+
+    private void createFromMail() {
+        textAreaBody.append("rand str : ##randstr28##\n" +
+                "rand num : ##randnum10##\n" +
+                "rand str upper : ##randupper30##\n" +
+                "rand str lower : ##randlower23##\n" +
+                "rand aes : ##randaes##\n");
     }
 
     public static void main(String[] args) {

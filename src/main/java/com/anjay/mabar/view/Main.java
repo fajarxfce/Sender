@@ -8,9 +8,6 @@ import com.formdev.flatlaf.themes.FlatMacLightLaf;
 
 import javax.swing.*;
 import javax.swing.table.TableColumn;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Enumeration;
 
 public class Main extends JFrame{
     private JPanel root;
@@ -50,6 +47,7 @@ public class Main extends JFrame{
     private JMenu fileMenu;
     private JMenuItem header;
     private JMenuItem exit;
+    private JComboBox priority;
     private ImportListController importListController;
     private ButtonGroup letterMode;
 
@@ -91,7 +89,9 @@ public class Main extends JFrame{
                 .setBody(textAreaBody)
                 .build();
 
-        SendMainController sendMainController = new SendMainController(sendEmailConfig);
+        SendingConfig sendingConfig = new SendingConfig(spConnection, spPause, spSleep, priority);
+
+        SendMainController sendMainController = new SendMainController(sendEmailConfig, sendingConfig);
         startButton.addActionListener(sendMainController);
         stopButton.addActionListener(sendMainController);
 
