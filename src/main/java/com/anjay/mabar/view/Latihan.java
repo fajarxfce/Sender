@@ -11,7 +11,7 @@ import org.simplejavamail.api.email.ContentTransferEncoding;
 import javax.swing.*;
 import javax.swing.table.TableColumn;
 
-public class Latihan extends JFrame {
+public class Latihan extends JFrame{
     private JPanel root;
     private JPanel smtpPane;
     private JPanel leftPane;
@@ -61,7 +61,7 @@ public class Latihan extends JFrame {
     private ButtonGroup letterMode;
 
     public Latihan(){
-        add(root);
+        System.out.println("constructor");
         encoding.setModel(new DefaultComboBoxModel<>(ContentTransferEncoding.values()));
         encoding.setSelectedIndex(6);
 
@@ -110,6 +110,8 @@ public class Latihan extends JFrame {
                 .setSubject(textAreaSubject)
                 .setFromName(textAreaFromName)
                 .setMessageID(txtMessageId)
+                .setTxtReplyTo(txtReplyTo)
+                .setTxtBounceTo(txtBounceTo)
                 .setContentType(contentType)
                 .setBody(textAreaBody)
                 .build();
@@ -168,20 +170,22 @@ public class Latihan extends JFrame {
     }
 
     public static void main(String[] args) {
-        setupLookAndFeel();
-        Latihan main = new Latihan();
-        main.setSize(1500, 800);
-        main.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        main.setLocationRelativeTo(null);
-        main.setVisible(true);
+        JFrame frame = new JFrame();
+        Latihan latihan = new Latihan();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+//        frame.setContentPane(latihan.root);
+        frame.add(latihan.root);
+        frame.setSize(800, 600);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 
-    private static void setupLookAndFeel() {
-        try {
-            UIManager.setLookAndFeel(new FlatMacLightLaf());
-        } catch (UnsupportedLookAndFeelException ex) {
-            System.err.println("Failed to initialize LaF");
-            JOptionPane.showMessageDialog(null, "Failed to initialize LaF");
-        }
-    }
+    //    private static void setupLookAndFeel() {
+//        try {
+//            UIManager.setLookAndFeel(new FlatMacLightLaf());
+//        } catch (UnsupportedLookAndFeelException ex) {
+//            System.err.println("Failed to initialize LaF");
+//            JOptionPane.showMessageDialog(null, "Failed to initialize LaF");
+//        }
+//    }
 }

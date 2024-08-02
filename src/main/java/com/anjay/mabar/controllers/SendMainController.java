@@ -35,6 +35,8 @@ public class SendMainController implements ActionListener, SendMailObserver {
         String body = emailConfig.getTextAreaBody().getText();
         String contentType = emailConfig.getContentType();
         String messageID = emailConfig.getMessageID().getText();
+        String replyTo = emailConfig.getTxtReplyTo().getText();
+        String bounceTo = emailConfig.getTxtBounceTo().getText();
 
         String con = config.getConnectionCount().getValue().toString();
         String sleep = config.getSleepTime().getValue().toString();
@@ -59,6 +61,8 @@ public class SendMainController implements ActionListener, SendMailObserver {
                 .setBody(body)
                 .setMessageID(messageID)
                 .setContentType(contentType)
+                .setReplyTo(replyTo)
+                .setBounceTo(bounceTo)
                 .build();
         SendEmailWorker worker = new SendEmailWorker(emailLists, smtpServers, emailHeaders,  connectionCount, emailDetails, sendConfig);
         worker.addObserver(this);

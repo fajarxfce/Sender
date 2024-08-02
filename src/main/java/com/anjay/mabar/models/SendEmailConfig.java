@@ -16,6 +16,8 @@ public class SendEmailConfig {
     private String contentType;
     private EmailHeaderTable headerTable;
     private JTextField messageID;
+    private JTextField txtReplyTo;
+    private JTextField txtBounceTo;
 
     private SendEmailConfig(Builder builder) {
         this.emailListTable = builder.emailListTable;
@@ -28,6 +30,8 @@ public class SendEmailConfig {
         this.contentType = builder.contentType;
         this.headerTable = builder.headerTable;
         this.messageID = builder.messageID;
+        this.txtReplyTo = builder.txtReplyTo;
+        this.txtBounceTo = builder.txtBounceTo;
     }
 
     public static class Builder {
@@ -41,6 +45,8 @@ public class SendEmailConfig {
         private String contentType;
         private EmailHeaderTable headerTable;
         private JTextField messageID;
+        private JTextField txtReplyTo;
+        private JTextField txtBounceTo;
         public Builder setEmailListTable(EmailListTable emailListTable) {
             this.emailListTable = emailListTable;
             return this;
@@ -91,6 +97,16 @@ public class SendEmailConfig {
             return this;
         }
 
+        public Builder setTxtReplyTo(JTextField txtReplyTo) {
+            this.txtReplyTo = txtReplyTo;
+            return this;
+        }
+
+        public Builder setTxtBounceTo(JTextField txtBounceTo) {
+            this.txtBounceTo = txtBounceTo;
+            return this;
+        }
+
         public SendEmailConfig build() {
             return new SendEmailConfig(this);
         }
@@ -133,5 +149,13 @@ public class SendEmailConfig {
     }
     public EmailHeaderTable getHeaderTable() {
         return headerTable;
+    }
+
+    public JTextField getTxtReplyTo() {
+        return txtReplyTo;
+    }
+
+    public JTextField getTxtBounceTo() {
+        return txtBounceTo;
     }
 }

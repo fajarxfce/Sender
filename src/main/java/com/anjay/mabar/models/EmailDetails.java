@@ -9,6 +9,8 @@ public class EmailDetails {
     private String toAddress;
     private String contentType;
     private String messageID;
+    private String replyTo;
+    private String bounceTo;
 
     private EmailDetails(Builder builder) {
         this.subject = builder.subject;
@@ -17,6 +19,8 @@ public class EmailDetails {
         this.contentType = builder.contentType;
         this.body = builder.body;
         this.messageID = builder.messageID;
+        this.replyTo = builder.replyTo;
+        this.bounceTo = builder.bounceTo;
     }
 
     public static class Builder {
@@ -26,6 +30,8 @@ public class EmailDetails {
         private String toAddress;
         private String contentType;
         private String messageID;
+        private String replyTo;
+        private String bounceTo;
 
         public Builder setSubject(List<String> subject) {
             this.subject = subject;
@@ -57,6 +63,16 @@ public class EmailDetails {
             return this;
         }
 
+        public Builder setReplyTo(String replyTo) {
+            this.replyTo = replyTo;
+            return this;
+        }
+
+        public Builder setBounceTo(String bounceTo) {
+            this.bounceTo = bounceTo;
+            return this;
+        }
+
         public EmailDetails build() {
             return new EmailDetails(this);
         }
@@ -80,6 +96,14 @@ public class EmailDetails {
 
     public String getMessageID() {
         return messageID;
+    }
+
+    public String getReplyTo() {
+        return replyTo;
+    }
+
+    public String getBounceTo() {
+        return bounceTo;
     }
 
     public String getBody() {

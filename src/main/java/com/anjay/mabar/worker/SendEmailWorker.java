@@ -66,11 +66,13 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String toAddress = emailDetails.getToAddress();
                         String contentType = emailDetails.getContentType();
                         String messageId = emailDetails.getMessageID();
+                        String replyTo = emailDetails.getReplyTo();
+                        String bounceTo = emailDetails.getBounceTo();
                         ContentTransferEncoding encoding = sendConfig.getContentTransferEncoding();
                         System.out.println("Thread : " + Thread.currentThread().getName());
 
                         SimpleMail.sendMail(
-                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority, encoding );
+                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority, encoding , replyTo, bounceTo);
 
                         notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
