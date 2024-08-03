@@ -15,7 +15,7 @@ import java.util.*;
 
 public class SimpleMail {
 
-    public static void sendMail(String targetEmail, String username, String password, String fromName, String subject, String body, String messageId, List<EmailHeader> headers, int priority, ContentTransferEncoding encoding, String replyTo, String bounceTo) throws MessagingException, IOException {
+    public static void sendMail(String targetEmail, String username, String password, String fromName, String subject, String body, String messageId, List<EmailHeader> headers, int priority, ContentTransferEncoding encoding, String replyTo, String bounceTo, String contentType) throws MessagingException, IOException {
 
         Map<String, Collection<String>> headerMap = new HashMap<>();
 

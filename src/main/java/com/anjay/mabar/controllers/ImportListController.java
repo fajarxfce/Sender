@@ -23,15 +23,15 @@ public class ImportListController implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        JFileChooser fileChooser = new JFileChooser();
-        int result = fileChooser.showOpenDialog(null);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            System.out.println(selectedFile.getAbsolutePath());
-            fetchEmailList(selectedFile.getAbsolutePath());
-        }
+//        JFileChooser fileChooser = new JFileChooser();
+//        int result = fileChooser.showOpenDialog(null);
+//        if (result == JFileChooser.APPROVE_OPTION) {
+//            File selectedFile = fileChooser.getSelectedFile();
+//            System.out.println(selectedFile.getAbsolutePath());
+//            fetchEmailList(selectedFile.getAbsolutePath());
+//        }
 
-//        fetchEmailList("C:\\Users\\Fajar\\Documents\\webde.txt");
+        fetchEmailList("/home/fajar/Documents/list.txt");
     }
 
     private void fetchEmailList(String path) {

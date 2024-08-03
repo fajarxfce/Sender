@@ -24,6 +24,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
     private List<EmailHeader> headers;
     private EmailDetails emailDetails;
     private SendConfig sendConfig;
+    private AtomicBoolean isCancelled = new AtomicBoolean(false);
 
     public SendEmailWorker(List<EmailList> emailList, List<SMTPServer> smtpServers, List<EmailHeader> headers, int connectionCount, EmailDetails emailDetails, SendConfig sendConfig) {
         this.emailList = emailList;
@@ -52,6 +53,9 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
             for (int j = 0; j < con && (i + j) < emailList.size(); j++) {
                 int index = i + j;
                 String email = emailList.get(index).getEmailAddress();
+                if (executorService.isTerminated()){
+                    break;
+                }
                 executorService.submit(() -> {
                     try {
                         List<String> subjectList = emailDetails.getSubject();
@@ -72,7 +76,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         System.out.println("Thread : " + Thread.currentThread().getName());
 
                         SimpleMail.sendMail(
-                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority, encoding , replyTo, bounceTo);
+                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority, encoding , replyTo, bounceTo, contentType);
 
                         notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
@@ -93,7 +97,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
 
 
     public void cancel() {
-        executorService.shutdownNow();
+        isCancelled.set(true);
     }
 
     public void addObserver(SendMailObserver observer) {

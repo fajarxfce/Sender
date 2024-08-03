@@ -77,11 +77,18 @@ public class Latihan extends JFrame{
         priority.addItem("Lowest");
         priority.setSelectedIndex(2);
 
+        spThread.setValue(1);
+        spConnection.setValue(1);
+        spSleep.setValue(0);
 
+        txtReplyTo.setText("reply@microsoft.com");
+        txtBounceTo.setText("reply@microsoft.com");
+        txtMessageId.setText("microsoft.com");
 
         letterMode = new ButtonGroup();
         letterMode.add(HTMLRadioButton);
         letterMode.add(plaintTextRadioButton);
+        letterMode.setSelected(HTMLRadioButton.getModel(), true);
 
         EmailHeaderTable emailHeaderTable = new EmailHeaderTable();
         headerTable.setModel(emailHeaderTable);
