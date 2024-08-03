@@ -2,6 +2,7 @@
 package com.anjay.mabar.utils;
 
 import com.anjay.mabar.models.EmailHeader;
+import com.anjay.mabar.models.MailDetails;
 import jakarta.mail.MessagingException;
 import org.simplejavamail.api.email.ContentTransferEncoding;
 import org.simplejavamail.api.email.Email;
@@ -15,7 +16,22 @@ import java.util.*;
 
 public class SimpleMail {
 
-    public static void sendMail(String targetEmail, String username, String password, String fromName, String subject, String body, String messageId, List<EmailHeader> headers, int priority, ContentTransferEncoding encoding, String replyTo, String bounceTo, String contentType) throws MessagingException, IOException {
+    public static void sendMail(MailDetails mailDetails) throws MessagingException, IOException {
+
+        String username = mailDetails.getServerDetails().getUsername();
+        String password = mailDetails.getServerDetails().getPassword();
+        String targetEmail = mailDetails.getRecipientDetails().getTargetEmail();
+        List<EmailHeader> headers = mailDetails.getContentDetails().getHeaders();
+        String fromName = mailDetails.getRecipientDetails().getFromName();
+        String subject = mailDetails.getContentDetails().getSubject();
+        String body = mailDetails.getContentDetails().getBody();
+        ContentTransferEncoding encoding = mailDetails.getContentDetails().getEncoding();
+        String messageId = mailDetails.getContentDetails().getMessageId();
+        String replyTo = mailDetails.getRecipientDetails().getReplyTo();
+        String bounceTo = mailDetails.getRecipientDetails().getBounceTo();
+        int priority = mailDetails.getContentDetails().getPriority();
+
+
 
         Map<String, Collection<String>> headerMap = new HashMap<>();
 

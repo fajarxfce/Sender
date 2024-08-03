@@ -46,7 +46,7 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
         int thread = Integer.parseInt(sendConfig.getThreadCount());
         int priority = sendConfig.getMailPriority();
 
-        this.executorService = Executors.newFixedThreadPool(10);
+        this.executorService = Executors.newFixedThreadPool(thread);
 
         for (int i = 0; i < emailList.size(); i += con) {
             SMTPServer smtpServer = smtpServers.get(smtpIndex);
@@ -73,10 +73,36 @@ public class SendEmailWorker extends SwingWorker<Void, String> {
                         String replyTo = emailDetails.getReplyTo();
                         String bounceTo = emailDetails.getBounceTo();
                         ContentTransferEncoding encoding = sendConfig.getContentTransferEncoding();
-                        System.out.println("Thread : " + Thread.currentThread().getName());
 
-                        SimpleMail.sendMail(
-                                email,smtpServer.getUsername(),smtpServer.getPassword(), fromName, subject, body, messageId, headers, priority, encoding , replyTo, bounceTo, contentType);
+                        ContentDetails contentDetails = new ContentDetails();
+                        contentDetails.setBody(body);
+                        contentDetails.setContentType(contentType);
+                        contentDetails.setEncoding(encoding);
+                        contentDetails.setMessageId(messageId);
+                        contentDetails.setPriority(priority);
+                        contentDetails.setSubject(subject);
+                        contentDetails.setHeaders(headers);
+
+                        RecipientDetails recipientDetails = new RecipientDetails();
+                        recipientDetails.setFromName(fromName);
+                        recipientDetails.setReplyTo(replyTo);
+                        recipientDetails.setBounceTo(bounceTo);
+                        recipientDetails.setTargetEmail(email);
+
+                        ServerDetails serverDetails = new ServerDetails();
+                        serverDetails.setUsername(smtpServer.getUsername());
+                        serverDetails.setPassword(smtpServer.getPassword());
+
+
+
+                        MailDetails mailDetails = new MailDetails();
+                        mailDetails.setServerDetails(serverDetails);
+                        mailDetails.setRecipientDetails(recipientDetails);
+                        mailDetails.setContentDetails(contentDetails);
+
+
+
+                        SimpleMail.sendMail(mailDetails);
 
                         notifySent("Sent!", index, smtpServer.getUsername());
                     } catch (Exception e) {
