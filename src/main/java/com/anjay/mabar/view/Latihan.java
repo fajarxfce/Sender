@@ -62,6 +62,7 @@ public class Latihan extends JFrame{
 
     public Latihan(){
         System.out.println("constructor");
+        setContentPane(root);
         encoding.setModel(new DefaultComboBoxModel<>(ContentTransferEncoding.values()));
         encoding.setSelectedIndex(6);
 
@@ -170,22 +171,20 @@ public class Latihan extends JFrame{
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame();
+        setupLookAndFeel();
         Latihan latihan = new Latihan();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//        frame.setContentPane(latihan.root);
-        frame.add(latihan.root);
-        frame.setSize(800, 600);
-        frame.setLocationRelativeTo(null);
-        frame.setVisible(true);
+        latihan.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        latihan.setSize(1500, 800);
+        latihan.setLocationRelativeTo(null);
+        latihan.setVisible(true);
     }
 
-    //    private static void setupLookAndFeel() {
-//        try {
-//            UIManager.setLookAndFeel(new FlatMacLightLaf());
-//        } catch (UnsupportedLookAndFeelException ex) {
-//            System.err.println("Failed to initialize LaF");
-//            JOptionPane.showMessageDialog(null, "Failed to initialize LaF");
-//        }
-//    }
+        private static void setupLookAndFeel() {
+        try {
+            UIManager.setLookAndFeel(new FlatMacLightLaf());
+        } catch (UnsupportedLookAndFeelException ex) {
+            System.err.println("Failed to initialize LaF");
+            JOptionPane.showMessageDialog(null, "Failed to initialize LaF");
+        }
+    }
 }

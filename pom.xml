@@ -49,6 +49,19 @@
                 </executions>
             </plugin>
 
+            <plugin>
+                <groupId>com.github.BenjaminFaal</groupId>
+                <artifactId>intellij-idea-gui-designer-maven-plugin</artifactId>
+                <version>2020.3.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile-forms</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
@@ -165,7 +178,22 @@
             <version>1.5.1</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.intellij/forms_rt -->
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>7.0.3</version>
+        </dependency>
+
+
     </dependencies>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>jitpack</id>
+            <url>https://jitpack.io</url>
+        </pluginRepository>
+    </pluginRepositories>
 
 
     <properties>
