@@ -24,7 +24,7 @@ public class EmailComponentController implements ActionListener {
             case "Import":
                 onImport();
             case "Save":
-//                onSave();
+                onSave();
                 break;
 
         }

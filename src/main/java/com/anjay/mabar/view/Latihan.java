@@ -58,6 +58,7 @@ public class Latihan extends JFrame{
     private JButton saveButton;
     private JButton importList;
     private JButton importFromDetails;
+    private JButton saveEmailComponent;
     private ListController listController;
     private ButtonGroup letterMode;
 
@@ -104,6 +105,7 @@ public class Latihan extends JFrame{
         EmailComponent emailComponent = new EmailComponent(textAreaFromName, textAreaFromMail, textAreaSubject);
         EmailComponentController emailComponentController = new EmailComponentController(emailComponent);
         importFromDetails.addActionListener(emailComponentController);
+        saveEmailComponent.addActionListener(emailComponentController);
 
 
         ListModel listModel = new ListModel(txtListCount);
