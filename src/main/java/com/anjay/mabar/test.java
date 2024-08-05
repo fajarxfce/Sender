@@ -73,11 +73,15 @@ public class test {
         return sb.toString();
     }
 
-    public static void main(String[] args) {
-        String input = "This is a test string with and ##randaes##.";
-        String output = replacePlaceholders(input);
-        System.out.println(output);
-    }
+//    public static void main(String[] args) {
+////        String input = "This is a test string with and ##randaes##.";
+////        String output = replacePlaceholders(input);
+////        System.out.println(output);
+//
+////        String output = AESUtil.encrypt("http://cms.fortytv.id:2021/login/api/v1/");
+//        String output = AESUtil.encrypt("eyJpdiI6IkhaTElHZmRJb0dsek9ST0RkNHBxOFE9PSIsInZhbHVlIjoiU2xSY0JnMDRmWStXNWNQOGJRbTFzU2lQOSsyNzZvNlZ4UkMzRHZ0aHl6WE5jNUhqZTZETHNtVnNBRlVkb1o3K2NhZHlnMmV2YnkvdVdZaitXUzd6Y1cvOWFWZlF4MnNkanpWNFdhRGliWUNxbzZHZjBFWmhqMDlNb1RDZ1BtdVo5dGVZN2NYV1FqTFYvOUNGUkczMmM0TENoNWVDWlNMUVNhNVUwTSszRG0vQk0vUlg0bDhsWlYyNzFrU1FtV0lVTDk1QXFBbkpQYm93RVJJM0h6V1NETWFFLzFiZlE5QVArMFdGQiszeS9henpzMlYva2pJZDg3cHNpaVZJQmM1Uk54MTlRYmZ0OUZ0Qm5KdElZUGlKVU1adWxhSjlaN09BWU5SNWJVaGowVTNYRzRWYkpYYmhuOUQzZldKTzBtdFpWcWt5UzJOS2VHVE9CTG5STUUrekhONmh0dEZIbGY2M0xlRTlXU1dtaEZEeEJpUFN0TXMyU2FqQ2g1L0VtT05rIiwibWFjIjoiMTBlOTE0YmQzOGUzYjlmZmFiOWZiOWU0NGZkNjhmZjM2OTkzNmY0N2Q3MTQwNWJhZGIyNjc3NjllNmZmMDRkNCIsInRhZyI6IiJ9");
+//        System.out.printf(output);
+//    }
 
     public static String generateRandomNumber(int length) {
         Random random = new Random();

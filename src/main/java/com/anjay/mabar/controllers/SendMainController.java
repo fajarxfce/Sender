@@ -50,7 +50,6 @@ public class SendMainController implements ActionListener, SendMailObserver {
 
 
 
-        List<String> emailList = emailConfig.getImportListController().getEmailAddresses();
         int connectionCount = (int) emailConfig.getConnectionCount();
         List<SMTPServer> smtpServers = SMTPServerFactory.createSMTPServers(smtpTableModel);
         List<EmailList> emailLists = EmailListFactory.createEmailList(emailListTable);

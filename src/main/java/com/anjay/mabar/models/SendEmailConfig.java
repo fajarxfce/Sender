@@ -1,14 +1,13 @@
 package com.anjay.mabar.models;
 
-import com.anjay.mabar.controllers.ImportListController;
+import com.anjay.mabar.controllers.ListController;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class SendEmailConfig {
     private EmailListTable emailListTable;
     private SMTPTableModel smtpTableModel;
-    private ImportListController importListController;
+    private ListController listController;
     private int connectionCount;
     private JTextArea textAreaSubject;
     private JTextArea textAreaFromName;
@@ -22,7 +21,7 @@ public class SendEmailConfig {
     private SendEmailConfig(Builder builder) {
         this.emailListTable = builder.emailListTable;
         this.smtpTableModel = builder.smtpTableModel;
-        this.importListController = builder.importListController;
+        this.listController = builder.listController;
         this.connectionCount = builder.connectionCount;
         this.textAreaSubject = builder.textAreaSubject;
         this.textAreaFromName = builder.textAreaFromName;
@@ -37,7 +36,7 @@ public class SendEmailConfig {
     public static class Builder {
         private EmailListTable emailListTable;
         private SMTPTableModel smtpTableModel;
-        private ImportListController importListController;
+        private ListController listController;
         private int connectionCount;
         private JTextArea textAreaSubject;
         private JTextArea textAreaFromName;
@@ -57,8 +56,8 @@ public class SendEmailConfig {
             return this;
         }
 
-        public Builder setListController(ImportListController importListController) {
-            this.importListController = importListController;
+        public Builder setListController(ListController listController) {
+            this.listController = listController;
             return this;
         }
 
@@ -120,8 +119,8 @@ public class SendEmailConfig {
         return smtpTableModel;
     }
 
-    public ImportListController getImportListController() {
-        return importListController;
+    public ListController getImportListController() {
+        return listController;
     }
 
     public int getConnectionCount() {

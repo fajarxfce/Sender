@@ -6,7 +6,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
 public class AESUtil {
-    private static final String SECRET_KEY = "kontolmaburbangg"; // Harus 16 karakter
+    private static final String SECRET_KEY = "0xecb56cf772b5c9"; // Harus 16 karakter
 
     public static String encrypt(String strToEncrypt) {
         try {

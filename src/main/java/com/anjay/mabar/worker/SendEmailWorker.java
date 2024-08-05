@@ -2,10 +2,8 @@ package com.anjay.mabar.worker;
 
 import com.anjay.mabar.models.*;
 import com.anjay.mabar.observers.SendMailObserver;
-import com.anjay.mabar.utils.EmailSender;
 import com.anjay.mabar.utils.SimpleMail;
 import org.simplejavamail.api.email.ContentTransferEncoding;
-import org.simplejavamail.api.email.Email;
 
 import javax.swing.*;
 import java.util.ArrayList;

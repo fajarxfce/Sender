@@ -1,10 +1,11 @@
 package com.anjay.mabar.view;
 
 import com.anjay.mabar.controllers.CustomHeaderController;
-import com.anjay.mabar.controllers.ImportListController;
+import com.anjay.mabar.controllers.ListController;
 import com.anjay.mabar.controllers.SelectSMTPController;
 import com.anjay.mabar.controllers.SendMainController;
 import com.anjay.mabar.models.*;
+import com.anjay.mabar.models.ListModel;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import org.simplejavamail.api.email.ContentTransferEncoding;
 
@@ -26,7 +27,7 @@ public class Latihan extends JFrame{
     private JRadioButton plaintTextRadioButton;
     private JTextArea textAreaBody;
     private JLabel smtpCount;
-    private JButton editButton;
+    private JButton addButton;
     private JButton importSmtp;
     private JTable smtpTable;
     private JTabbedPane fromTab;
@@ -37,8 +38,8 @@ public class Latihan extends JFrame{
     private JTextArea textAreaFromName;
     private JTextArea textAreaFromMail;
     private JButton addList;
-    private JButton clearAllButton;
-    private JButton clearSuccessButton;
+    private JButton clearAllList;
+    private JButton clearSuccessList;
     private JTable tableEmailList;
     private JTable headerTable;
     private JScrollPane jScrollSmtp;
@@ -57,7 +58,9 @@ public class Latihan extends JFrame{
     private JButton btnStart;
     private JButton btnStop;
     private JComboBox priority;
-    private ImportListController importListController;
+    private JButton saveButton;
+    private JButton importList;
+    private ListController listController;
     private ButtonGroup letterMode;
 
     public Latihan(){
@@ -101,11 +104,15 @@ public class Latihan extends JFrame{
         spConnection.setValue(2);
         spSleep.setValue(3000);
 
-        EmailListPath emailListPath = new EmailListPath(txtListCount);
+        ListModel listModel = new ListModel(txtListCount);
         EmailListTable emailListTable = new EmailListTable();
         tableEmailList.setModel(emailListTable);
-        importListController = new ImportListController(emailListTable);
-        addList.addActionListener(importListController);
+        listController = new ListController(emailListTable, listModel);
+        importList.addActionListener(listController);
+        addList.addActionListener(listController);
+        clearAllList.addActionListener(listController);
+        clearSuccessList.addActionListener(listController);
+        
 
         String contentType = HTMLRadioButton.isSelected() ? "html" : "text";
 
@@ -113,7 +120,7 @@ public class Latihan extends JFrame{
                 .setEmailListTable(emailListTable)
                 .setSmtpTableModel(smtpTableModel)
                 .setHeaderTable(emailHeaderTable)
-                .setListController(importListController)
+                .setListController(listController)
                 .setConnection((int) spConnection.getValue())
                 .setSubject(textAreaSubject)
                 .setFromName(textAreaFromName)
@@ -138,6 +145,8 @@ public class Latihan extends JFrame{
         importHeader.addActionListener(headerController);
         clearHeader.addActionListener(headerController);
         saveHeader.addActionListener(headerController);
+        
+        
 
         createSubject();
         createFromName();

@@ -2,9 +2,9 @@ package com.anjay.mabar.models;
 
 import javax.swing.*;
 
-public class EmailListPath {
+public class ListModel {
     private JLabel emailCount;
-    public EmailListPath(JLabel emailCount) {
+    public ListModel(JLabel emailCount) {
         this.emailCount = emailCount;
     }
     public void setPath(String path) {
