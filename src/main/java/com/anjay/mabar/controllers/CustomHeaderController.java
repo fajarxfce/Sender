@@ -30,7 +30,7 @@ public class CustomHeaderController implements ActionListener {
             case "Save":
                 onSave();
                 break;
-            case "Clear":
+            case "Clear All":
                 emailHeaderTable.setRowCount(0);
                 break;
         }
@@ -38,13 +38,20 @@ public class CustomHeaderController implements ActionListener {
 
     private void onSave() {
         EmailHeaderTable tableModel = (EmailHeaderTable) header.getModel();
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Users\\Fajar\\Documents\\Sender\\headers.txt"))) {
-            for (int i = 0; i < tableModel.getRowCount(); i++) {
-                writer.write(tableModel.getValueAt(i, 1).toString() + "|" + tableModel.getValueAt(i, 2).toString());
-                writer.newLine();
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Save Headers");
+
+        int userSelection = fileChooser.showSaveDialog(null);
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileToSave))) {
+                for (int i = 0; i < tableModel.getRowCount(); i++) {
+                    writer.write(tableModel.getValueAt(i, 1).toString() + "|" + tableModel.getValueAt(i, 2).toString());
+                    writer.newLine();
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
         }
     }
 

@@ -44,7 +44,7 @@ public class Latihan extends JFrame{
     private JTable headerTable;
     private JScrollPane jScrollSmtp;
     private JLabel txtListCount;
-    private JButton clearHeader;
+    private JButton clearAllHeader;
     private JButton importHeader;
     private JButton addHeader;
     private JButton saveHeader;
@@ -143,7 +143,7 @@ public class Latihan extends JFrame{
         CustomHeaderController headerController = new CustomHeaderController(emailHeaderTable, headerTable);
         addHeader.addActionListener(headerController);
         importHeader.addActionListener(headerController);
-        clearHeader.addActionListener(headerController);
+        clearAllHeader.addActionListener(headerController);
         saveHeader.addActionListener(headerController);
         
         
