@@ -1,9 +1,6 @@
 package com.anjay.mabar.view;
 
-import com.anjay.mabar.controllers.CustomHeaderController;
-import com.anjay.mabar.controllers.ListController;
-import com.anjay.mabar.controllers.SelectSMTPController;
-import com.anjay.mabar.controllers.SendMainController;
+import com.anjay.mabar.controllers.*;
 import com.anjay.mabar.models.*;
 import com.anjay.mabar.models.ListModel;
 import com.formdev.flatlaf.themes.FlatMacLightLaf;
@@ -60,6 +57,7 @@ public class Latihan extends JFrame{
     private JComboBox priority;
     private JButton saveButton;
     private JButton importList;
+    private JButton importFromDetails;
     private ListController listController;
     private ButtonGroup letterMode;
 
@@ -80,9 +78,10 @@ public class Latihan extends JFrame{
         priority.addItem("Lowest");
         priority.setSelectedIndex(2);
 
-        spThread.setValue(1);
-        spConnection.setValue(1);
-        spSleep.setValue(0);
+        SpinnerNumberModel spinnerNumberModel = new SpinnerNumberModel(1, 1, 100, 1);
+        spThread.setModel(spinnerNumberModel);
+        spConnection.setModel(spinnerNumberModel);
+        spSleep.setModel(spinnerNumberModel);
 
         txtReplyTo.setText("reply@microsoft.com");
         txtBounceTo.setText("reply@microsoft.com");
@@ -101,8 +100,11 @@ public class Latihan extends JFrame{
         SMTPPath smtpPath = new SMTPPath(smtpCount);
         SelectSMTPController selectSMTPController = new SelectSMTPController(smtpPath, smtpTableModel);
         importSmtp.addActionListener(selectSMTPController);
-        spConnection.setValue(2);
-        spSleep.setValue(3000);
+
+        EmailComponent emailComponent = new EmailComponent(textAreaFromName, textAreaFromMail, textAreaSubject);
+        EmailComponentController emailComponentController = new EmailComponentController(emailComponent);
+        importFromDetails.addActionListener(emailComponentController);
+
 
         ListModel listModel = new ListModel(txtListCount);
         EmailListTable emailListTable = new EmailListTable();
